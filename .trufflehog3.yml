@@ -5,7 +5,7 @@ exclude: # exclude matching issues
       - cache/**
       - node_modules/**
       - package-lock.json
-#      - .env
+      - .env
 
 # NOTE you can also specify IDs or patterns together or without paths, e.g.
 #

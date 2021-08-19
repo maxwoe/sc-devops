@@ -75,10 +75,10 @@ module.exports = {
         // forking is enabled only if FORKING_URL env is provided
         enabled: !!process.env.FORKING_URL,
         // URL should point to a node with archival data (Alchemy recommended)
-        url: process.env.FORKING_URL || "",
+        url: process.env.FORKING_URL || "https://eth-mainnet.alchemyapi.io/v2/<key>",
         // latest block is taken if FORKING_BLOCK env is not provided
         blockNumber:
-          process.env.FORKING_BLOCK && parseInt(process.env.FORKING_BLOCK),
+          process.env.FORKING_BLOCK && parseInt(process.env.FORKING_BLOCK) || 0,
       },
     },
     localhost: {
