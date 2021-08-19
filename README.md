@@ -11,20 +11,19 @@ For development, the following versions were used:
 - `Node.js` – v16.7.0
 - `npm` – 7.20.3
 
+## Installation
+
+Run ```npm install``` to install all dependencies specified in `package.json` and prepare husky hooks.
+
 ## Project Structure
 
 - The standard `package.json` file with several helpful script commands
-- `hardhat.config.js` file with prepared settings for development and prod networks
+- `hardhat.config.js` file with prepared settings for dev and prod networks
 - `.env` file for custom variables
 - `husky` folder containing pre-commit hooks configuration
 - `abi` folder containing the smart contract ABIs after compilation
 - `docs` folder containing the documentation derived from NatSpec annotations in smart contracts
-- Several configuration files for additional developers tools:
-    - as
-
-## Installation
-
-Run ```npm install``` to install all dependencies specified in `package.json` and prepare husky hooks.
+- Several configuration files for additional developers tools
 
 ### Excerpt of Important Tools
 
@@ -34,22 +33,12 @@ Run ```npm install``` to install all dependencies specified in `package.json` an
 - [hardhat-docgen](https://hardhat.org/plugins/hardhat-docgen.html): Generates documentation from NatSpec comments on compilation
 - [hardhat-watcher](https://hardhat.org/plugins/hardhat-watcher.html): Optionally run actions when files change (e.g., auto compile)
 - [slither](https://github.com/crytic/slither): Static analysis framework used to inspect Solidity smart contracts
-- [solidity-coverage](https://github.com/sc-forks/solidity-coverage): Determines code coverage for Solidity testing
 - [solhint](https://github.com/protofire/solhint): A linting utility for Solidity code
+- [solidity-coverage](https://github.com/sc-forks/solidity-coverage): Determines code coverage for Solidity testing
 - [trufflehog3](https://github.com/feeltheajf/trufflehog3): A secret scanner that searches through git repositories for secrets
 
 ### Configuration
 
 ### Pre-commit hooks
-Linting Smart Contracts
+Linting Smart Contracts  
 Scanning for Secrets 
-
-### gitleaks
-Install
-```bash
-> curl -s  https://api.github.com/repos/zricethezav/gitleaks/releases/latest |grep browser_download_url  |  cut -d '"' -f 4  | grep '\linux-amd64$'| wget -i -```
-> mv gitleaks-linux-amd64 gitleaks
-> chmod +x gitleaks
-> sudo mv gitleaks /usr/local/bin/
-> gitleaks --version
-```

@@ -1,13 +1,14 @@
 require('dotenv').config()
 require('hardhat-abi-exporter');
-require("@nomiclabs/hardhat-waffle");
-require("@nomiclabs/hardhat-solhint");
-require("solidity-coverage");
 require('hardhat-deploy');
-require("@nomiclabs/hardhat-etherscan");
 require("hardhat-watcher");
 require('hardhat-contract-sizer');
 require('hardhat-docgen');
+require("@nomiclabs/hardhat-waffle");
+require("@nomiclabs/hardhat-solhint");
+require("@nomiclabs/hardhat-ethers");
+require("@nomiclabs/hardhat-etherscan");
+require("solidity-coverage");
 
 require("./tasks/accounts");
 
@@ -44,6 +45,7 @@ function getChainConfig(network) {
       path: "m/44'/60'/0'/0",
     },
     chainId: chainIds[network],
+    tags: network === "ropsten" && ["staging"] || network === "mainnet" && ["production"] || [],
     url,
   };
 }
@@ -80,17 +82,17 @@ module.exports = {
         blockNumber:
           process.env.FORKING_BLOCK && parseInt(process.env.FORKING_BLOCK) || 0,
       },
+      tags: ["test", "local"]
     },
     localhost: {
       url: 'http://127.0.0.1:8545',
+      tags: ["local"]
     },
     goerli: getChainConfig("goerli"),
     kovan: getChainConfig("kovan"),
     rinkeby: getChainConfig("rinkeby"),
     ropsten: getChainConfig("ropsten"),
     mainnet: getChainConfig("mainnet"),
-    staging: getChainConfig("staging"),
-    production: getChainConfig("mainnet"),
   },
   etherscan: {
     apiKey: process.env.ETHERSCAN_API_KEY
