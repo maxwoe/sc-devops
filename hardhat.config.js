@@ -60,7 +60,7 @@ module.exports = {
     sources: "./contracts",
     tests: "./test",
     cache: "./cache",
-    artifacts: "./artifacts"
+    artifacts: "./artifacts" // build
   },
   defaultNetwork: "hardhat",
   networks: {
@@ -71,6 +71,15 @@ module.exports = {
       chainId: chainIds.hardhat,
       // See https://github.com/sc-forks/solidity-coverage/issues/652
       hardfork: process.env.CODE_COVERAGE ? "berlin" : "london",
+      forking: {
+        // forking is enabled only if FORKING_URL env is provided
+        enabled: !!process.env.FORKING_URL,
+        // URL should point to a node with archival data (Alchemy recommended)
+        url: process.env.FORKING_URL || "",
+        // latest block is taken if FORKING_BLOCK env is not provided
+        blockNumber:
+          process.env.FORKING_BLOCK && parseInt(process.env.FORKING_BLOCK),
+      },
     },
     localhost: {
       url: 'http://127.0.0.1:8545',
@@ -123,5 +132,13 @@ module.exports = {
     path: './docs',
     clear: true,
     runOnCompile: true,
-  }
+  },
+  namedAccounts: {
+    deployer: {
+      default: 0, // take the first account as deployer
+    },
+  },
+  mocha: {
+    timeout: 30000,
+  },
 };

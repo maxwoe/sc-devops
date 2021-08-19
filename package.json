@@ -1,15 +1,19 @@
 {
   "name": "hardhat-project",
   "scripts": {
+    "prepare": "husky install",
     "evm": "npx hardhat node",
+    "clean": "rm -rf abi artifacts cache build dist docs typechain",
+    "build": "npx hardhat compile",
     "test": "npx hardhat test",
-    "clear": "rm -rf abi artifacts cache build dist typechain",
+    "generate-doc": "run hardhat docgen",
     "coverage": "node --max-old-space-size=4096 ./node_modules/.bin/hardhat coverage --network hardhat --solcoverjs ./.solcover.js",
     "slither": "pip3 install --user slither-analyzer && slither .",
     "sizer": "npx hardhat size-contracts",
-    "prepare": "husky install",
-    "generate-doc": "run hardhat docgen",
-    "check": "npx hardhat check"
+    "check": "npx hardhat check",
+    "lint": "node ./node_modules/.bin/solhint 'contracts/**/*.sol'",
+    "secrets-scan": "trufflehog --regex --rules trufflehog-rules.json --entropy=True --exclude_paths trufflehog-exclude.txt ."
+
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",

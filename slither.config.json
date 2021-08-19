@@ -1,4 +1,5 @@
 {
+    "compile_force_framework": "hardhat",
     "detectors_to_exclude": "naming-convention|solc-version",
     "exclude_informational": false,
     "exclude_low": false,
@@ -6,7 +7,7 @@
     "exclude_high": false,
     "disable_color": false,
     "filter_paths": "@openzeppelin|interfaces|mock",
-    "ignore_compile": true,
+    "ignore_compile": false,
     "legacy_ast": false,
     "solc": "0.8.7"
 }
