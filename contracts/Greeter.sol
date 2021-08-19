@@ -4,7 +4,6 @@ pragma solidity 0.8.7;
 import "hardhat/console.sol";
 
 /// @title An example Greeter contract
-/// @author 
 /// @notice This contract is only for simulation purposes
 /// @dev All function calls are currently implemented without side effects
 /// @custom:experimental This is an experimental contract.
@@ -16,7 +15,7 @@ contract Greeter {
         greeting = _greeting;
     }
 
-    /// @notice Returns a greeting phrase 
+    /// @notice Returns a greeting phrase
     /// @return Greeting string
     function greet() public view returns (string memory) {
         return greeting;
