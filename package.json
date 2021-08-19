@@ -2,7 +2,7 @@
   "name": "hardhat-project",
   "scripts": {
     "prepare": "husky install",
-    "clean": "rm -rf abi artifacts cache coverage docs && rm coverage.json",
+    "clean": "rm -rf abi artifacts cache coverage docs && rm -f coverage.json",
     "build": "npx hardhat compile",
     "test": "npx hardhat test",
     "generate-doc": "run hardhat docgen",
