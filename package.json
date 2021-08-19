@@ -3,7 +3,7 @@
   "scripts": {
     "prepare": "husky install",
     "evm": "npx hardhat node",
-    "clean": "rm -rf abi artifacts cache build dist docs typechain",
+    "clean": "rm -rf abi artifacts cache build coverage docs",
     "build": "npx hardhat compile",
     "test": "npx hardhat test",
     "generate-doc": "run hardhat docgen",
@@ -12,8 +12,9 @@
     "sizer": "npx hardhat size-contracts",
     "check": "npx hardhat check",
     "lint": "node ./node_modules/.bin/solhint 'contracts/**/*.sol'",
-    "secrets-scan": "trufflehog --regex --rules trufflehog-rules.json --entropy=True --exclude_paths trufflehog-exclude.txt ."
-
+    "trufflehog": "trufflehog --regex --rules trufflehog-rules.json --entropy=True --exclude_paths trufflehog-exclude.txt .",
+    "trufflehog3": "pip3 install --user trufflehog3 && trufflehog3 --no-history -v",
+    "gitleaks": "gitleaks --path=. -v --no-git --config-path .gitleaks.toml"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",

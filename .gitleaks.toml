@@ -1,0 +1,8 @@
+[allowlist]
+description = "Skip false positive locations and files"
+files = ['''^\.?gitleaks.toml$''',
+    '''(.*?)(jpg|gif|doc|pdf|bin|svg)$'''
+]
+paths = [
+    '''node_modules(.*)$'''
+]
