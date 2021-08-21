@@ -4,42 +4,72 @@ cache:
   paths:
     - node_modules
 
-before_script:
-  - npm install
-
 stages:          
   - build
   - test
+  - report
   - deploy
 
-build-job:       
+build:       
   stage: build
   script:
     - echo "Compiling the code..."
-    - npm run build
+    - npm install
+    - npm run compile
     - echo "Compile complete."
   artifacts:
     paths:
       - artifacts
 
-lint-test-job:   
+audit-slither-test:   
+  stage: test    
+  script:
+    - echo "Running slither..."
+    - pip3 install --user slither-analyzer
+    - slither .
+  allow_failure: false
+
+lint-test:   
   stage: test    
   script:
     - echo "Linting code..."
+    - npm install
     - npm run lint 
     - echo "No lint issues found."
 
-unit-test-job:   
+unit-test:   
   stage: test    
   script:
     - echo "Running unit tests... "
+    - npm install
     - npm run test
-    - echo "Code coverage is 90%"
 
-deploy-job:      
+coverage:
+  stage: report
+  script:
+    - echo "Generating code coverage report..."
+    - npm run coverage
+  artifacts:
+    paths:
+      - coverage
+  allow_failure: true
+
+gas-report:
+  stage: report
+  script:
+    - echo "Generating gas report..."
+    - npm run test # creates gas-report.txt
+    - echo "<pre>" > gas-report/index.html
+    - npx ansi-to-html gas-report.txt --fg black --bg white >> gas-report.html
+  artifacts:
+    paths:
+      - gas-report.html
+
+deploy:      
   stage: deploy
   script:
     - echo "Deploying application..."
     - echo "Application successfully deployed."
+
 
 
