@@ -1,0 +1,42 @@
+image: node:latest
+
+cache:
+  paths:
+    - node_modules
+
+stages:          
+  - build
+  - test
+  - deploy
+
+build-job:       
+  stage: build
+  script:
+    - echo "Compiling the code..."
+    - npm run compile
+    - echo "Compile complete."
+  artifacts:
+    paths:
+      - artifacts
+
+lint-test-job:   
+  stage: test    
+  script:
+    - echo "Linting code..."
+    - npm run lint 
+    - echo "No lint issues found."
+
+unit-test-job:   
+  stage: test    
+  script:
+    - echo "Running unit tests... "
+    - npm run test
+    - echo "Code coverage is 90%"
+
+deploy-job:      
+  stage: deploy
+  script:
+    - echo "Deploying application..."
+    - echo "Application successfully deployed."
+
+
