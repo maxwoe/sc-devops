@@ -51,6 +51,7 @@ vulnerability-test 2/2:
     - apt-get update
     - apt-get install -y software-properties-common
     - add-apt-repository ppa:ethereum/ethereum
+    - apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 1C52189C923F6CA9
     - apt-get update
     - apt-get install -y solc
     - apt-get install -y libssl-dev python3-dev python3-pip
