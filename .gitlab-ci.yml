@@ -22,7 +22,19 @@ build:
     paths:
       - artifacts
 
-audit-slither-test: 
+docgen:       
+  stage: build
+  before_script:
+    - npm install
+  script:
+    - echo "Compiling the code..."
+    - npm run docgen
+    - echo "Compile complete."
+  artifacts:
+    paths:
+      - docs
+
+vulnerability-test 1/2: 
   stage: test
   needs: []
   before_script:
@@ -32,6 +44,21 @@ audit-slither-test:
   script:
     - echo "Running slither..."
     - slither .
+  allow_failure: true
+
+vulnerability-test 2/2: 
+  stage: test
+  needs: []
+  before_script:
+    - apt-get update
+    - apt-et install software-properties-common
+    - add-apt-repository ppa:ethereum/ethereum
+    - apt-get install solc
+    - apt-get install libssl-dev python3-dev python3-pip
+    - pip3 install mythril
+  script:
+    - echo "Running mythril..."
+    - mythril analyze ./contracts/Greeter.sol
   allow_failure: true
 
 lint-test:   
@@ -74,17 +101,50 @@ gas-report:
   script:
     - echo "Generating gas report..."
     - npm run test # creates gas-report.txt
-    - echo "<pre>" > gas-report/index.html
+    - echo "<pre>" > gas-report.html
     - npx ansi-to-html gas-report.txt --fg black --bg white >> gas-report.html
   artifacts:
     paths:
       - gas-report.html
 
-deploy:      
+# Currently contracts are deployed into prod (testnet / mainnet) locally from a developer's machine.
+# The results are saved in deployments dir which is kept in the repository.
+deploy_staging:
   stage: deploy
+  when: manual
   script:
-    - echo "Deploying application..."
-    - echo "Application successfully deployed."
+    - echo "Deploy to staging environment"
+    - npx hardhat --network ropsten deploy
+  environment:
+    name: staging
+    url: https://staging.example.com
+  only:
+    - main
 
+deploy_prod:
+  stage: deploy
+  when: manual
+  script:
+    - echo "Deploy to production environment"
+    - npx hardhat --network mainnet deploy
+  environment:
+    name: production
+    url: https://example.com
+  only:
+    - main
 
+verify_staging:
+    stage: deploy
+    when: manual
+    script:
+        - npx hardhat --network ropsten etherscan-verify --license UNLICENSED --force-license
+        - npx hardhat --network ropsten sourcify
 
+verify_delpoy:
+    stage: deploy
+    when: manual
+    script:
+        - npx hardhat --network mainnet etherscan-verify --license NONE --force-license
+        - npx hardhat --network mainnet sourcify
+    
+    
