@@ -121,20 +121,17 @@ module.exports = {
       tasks: ["compile"],
       files: ["./contracts"],
       verbose: true,
-    },
-    ci: {
-      tasks: ["clean", { command: "compile", params: { quiet: true } }, { command: "test", params: { noCompile: true, testFiles: ["testfile.ts"] } } ],
     }
   },
   contractSizer: {
     alphaSort: true,
-    runOnCompile: true,
+    runOnCompile: false,
     disambiguatePaths: false,
   },
   docgen: {
     path: './docs',
     clear: true,
-    runOnCompile: true,
+    runOnCompile: false,
   },
   namedAccounts: {
     deployer: {

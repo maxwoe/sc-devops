@@ -8,7 +8,7 @@ pragma solidity 0.8.7;
 /// @dev All function calls are currently implemented without side effects
 /// @custom:experimental This is an experimental contract.
 contract Greeter {
-    string public greeting;
+    string private greeting;
 
     constructor(string memory _greeting) {
         //console.log("Deploying a Greeter with greeting:", _greeting);
@@ -24,7 +24,7 @@ contract Greeter {
     /// @notice Sets a greeting phrase
     /// @dev Contains a console log output
     /// @param _greeting The greeting phrase
-    function setGreeting(string memory _greeting) public {
+    function setGreeting(string memory _greeting) external {
         //console.log("Changing greeting from '%s' to '%s'", greeting, _greeting);
         greeting = _greeting;
     }

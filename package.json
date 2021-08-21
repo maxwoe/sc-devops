@@ -8,7 +8,7 @@
     "lint": "node ./node_modules/.bin/solhint -f table contracts/**/*.sol",
     "lint:fix": "node ./node_modules/.bin/solhint contracts/**/*.sol --fix",
     "check": "npx hardhat check",
-    "generate-doc": "run hardhat docgen",
+    "docgen": "run hardhat docgen",
     "coverage": "node --max-old-space-size=4096 ./node_modules/.bin/hardhat coverage --network hardhat --solcoverjs ./.solcover.js",
     "slither": "pip3 install --user slither-analyzer && slither .",
     "mythx": "pip3 install --user mythx-cli && mythx --ci analyze ./contracts",
