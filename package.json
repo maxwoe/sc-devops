@@ -3,7 +3,7 @@
   "scripts": {
     "prepare": "husky install",
     "clean": "rm -rf abi artifacts cache coverage docs && rm -f coverage.json",
-    "build": "npx hardhat compile",
+    "compile": "npx hardhat compile",
     "test": "npx hardhat test",
     "generate-doc": "run hardhat docgen",
     "coverage": "node --max-old-space-size=4096 ./node_modules/.bin/hardhat coverage --network hardhat --solcoverjs ./.solcover.js",
