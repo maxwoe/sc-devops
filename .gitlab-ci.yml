@@ -4,8 +4,8 @@ cache:
   paths:
     - node_modules
 
-before_script:
-  - npm install
+#before_script:
+#  - npm install
 
 stages:          
   - build
@@ -16,7 +16,7 @@ build-job:
   stage: build
   script:
     - echo "Compiling the code..."
-    - npm run compile
+    - npm run build
     - echo "Compile complete."
   artifacts:
     paths:
