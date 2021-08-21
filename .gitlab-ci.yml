@@ -58,7 +58,6 @@ vulnerability-test 2/2:
 #    - apt-get install -y libssl-dev python3-dev python3-pip
 #    - pip3 install mythril
   script:
-    - echo "Running mythril..."
     - analyze ./contracts/Greeter.sol
   allow_failure: true
 
