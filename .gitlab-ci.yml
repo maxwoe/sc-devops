@@ -24,17 +24,19 @@ build:
 
 audit-slither-test: 
   stage: test
+  needs: []
   before_script:
     - npm install
     - apt-get update && apt-get install -y python3-pip
+    - pip3 install slither-analyzer
   script:
     - echo "Running slither..."
-    - pip3 install slither-analyzer
     - slither .
   allow_failure: true
 
 lint-test:   
   stage: test 
+  needs: []
   before_script:
       - npm install   
   script:
@@ -43,17 +45,19 @@ lint-test:
     - echo "No lint issues found."
 
 unit-test:   
-  stage: test   
+  stage: test
+  needs: []
   before_script:
-      - npm install    
+    - npm install    
   script:
     - echo "Running unit tests... "
     - npm run test
 
 coverage:
   stage: report
+  needs: []
   before_script:
-      - npm install 
+    - npm install 
   script:
     - echo "Generating code coverage report..."
     - npm run coverage
@@ -64,8 +68,9 @@ coverage:
 
 gas-report:
   stage: report
+  needs: []
   before_script:
-      - npm install
+    - npm install
   script:
     - echo "Generating gas report..."
     - npm run test # creates gas-report.txt
