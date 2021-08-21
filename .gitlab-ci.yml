@@ -12,9 +12,10 @@ stages:
 
 build:       
   stage: build
+  before_script:
+    - npm install
   script:
     - echo "Compiling the code..."
-    - npm install
     - npm run compile
     - echo "Compile complete."
   artifacts:
@@ -22,8 +23,10 @@ build:
       - artifacts
 
 audit-slither-test: 
-  image: "python:3.7"  
-  stage: test    
+  stage: test
+  before_script:
+    - npm install
+    - apt-get update && apt-get install -y python3-pip
   script:
     - echo "Running slither..."
     - pip3 install slither-analyzer
@@ -31,22 +34,26 @@ audit-slither-test:
   allow_failure: true
 
 lint-test:   
-  stage: test    
+  stage: test 
+  before_script:
+      - npm install   
   script:
     - echo "Linting code..."
-    - npm install
     - npm run lint 
     - echo "No lint issues found."
 
 unit-test:   
-  stage: test    
+  stage: test   
+  before_script:
+      - npm install    
   script:
     - echo "Running unit tests... "
-    - npm install
     - npm run test
 
 coverage:
   stage: report
+  before_script:
+      - npm install 
   script:
     - echo "Generating code coverage report..."
     - npm run coverage
@@ -57,6 +64,8 @@ coverage:
 
 gas-report:
   stage: report
+  before_script:
+      - npm install
   script:
     - echo "Generating gas report..."
     - npm run test # creates gas-report.txt
