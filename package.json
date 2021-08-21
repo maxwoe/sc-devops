@@ -5,13 +5,14 @@
     "clean": "rm -rf abi artifacts cache coverage docs && rm -f coverage.json",
     "compile": "npx hardhat compile",
     "test": "npx hardhat test",
+    "lint": "node ./node_modules/.bin/solhint -f table contracts/**/*.sol",
+    "lint:fix": "node ./node_modules/.bin/solhint contracts/**/*.sol --fix",
+    "check": "npx hardhat check",
     "generate-doc": "run hardhat docgen",
     "coverage": "node --max-old-space-size=4096 ./node_modules/.bin/hardhat coverage --network hardhat --solcoverjs ./.solcover.js",
     "slither": "pip3 install --user slither-analyzer && slither .",
+    "mythx": "pip3 install --user mythx-cli && mythx --ci analyze ./contracts",
     "sizer": "npx hardhat size-contracts",
-    "check": "npx hardhat check",
-    "lint": "node ./node_modules/.bin/solhint -f table contracts/**/*.sol",
-    "lint:fix": "node ./node_modules/.bin/solhint contracts/**/*.sol --fix",
     "secret-scan": "pip3 install --user trufflehog3 && trufflehog3 --no-history -v"
   },
   "devDependencies": {
@@ -34,6 +35,7 @@
     "solidity-coverage": "^0.7.16"
   },
   "dependencies": {
+    "ansi-to-html": "^0.7.1",
     "dotenv": "^10.0.0",
     "hardhat-abi-exporter": "^2.2.1",
     "hardhat-contract-sizer": "^2.0.3",

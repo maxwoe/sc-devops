@@ -1,4 +1,5 @@
 node_modules
+.env
 
 #Hardhat files
 artifacts
@@ -8,3 +9,5 @@ abi
 docs
 coverage
 coverage.json
+gas-report.html
+gas-report.txt

@@ -30,7 +30,9 @@ Run ```npm install``` to install all dependencies specified in `package.json` an
 - [husky](https://github.com/typicode/husky): Modern native git hooks (used to setup pre-commit tasks)
 - [hardhat-abi-exporter](https://hardhat.org/plugins/hardhat-abi-exporter.html): Exports generated ABIs on compilation
 - [hardhat-contract-sizer](https://hardhat.org/plugins/hardhat-contract-sizer.html): Outputs Solidity contract sizes on compilation
+- [hardhat-deploy](https://hardhat.org/plugins/hardhat-deploy.html): Plugin for replicable deployments and easy testing
 - [hardhat-docgen](https://hardhat.org/plugins/hardhat-docgen.html): Generates documentation from NatSpec comments on compilation
+- [hardhat-gas-reporter](https://hardhat.org/plugins/hardhat-gas-reporter.html): Generates gas reports
 - [hardhat-watcher](https://hardhat.org/plugins/hardhat-watcher.html): Optionally run actions when files change (e.g., auto compile)
 - [slither](https://github.com/crytic/slither): Static analysis framework used to inspect Solidity smart contracts
 - [solhint](https://github.com/protofire/solhint): A linting utility for Solidity code

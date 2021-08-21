@@ -4,6 +4,7 @@ require('hardhat-deploy');
 require("hardhat-watcher");
 require('hardhat-contract-sizer');
 require('hardhat-docgen');
+require("hardhat-gas-reporter");
 require("@nomiclabs/hardhat-waffle");
 require("@nomiclabs/hardhat-solhint");
 require("@nomiclabs/hardhat-ethers");
@@ -113,7 +114,7 @@ module.exports = {
     gasPrice: 100,
     enabled: (process.env.REPORT_GAS) ? true : false,
     coinmarketcap: process.env.COINMARKETCAP_API_KEY,
-    maxMethodDiff: 10,
+    outputFile: 'gas-report.txt'
   },
   watcher: {
     compilation: {
@@ -141,6 +142,6 @@ module.exports = {
     },
   },
   mocha: {
-    timeout: 30000,
+    timeout: 60000,
   },
 };

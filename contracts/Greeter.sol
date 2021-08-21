@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.7;
 
-import "hardhat/console.sol";
+//import "hardhat/console.sol";
 
 /// @title An example Greeter contract
 /// @notice This contract is only for simulation purposes
@@ -11,7 +11,7 @@ contract Greeter {
     string public greeting;
 
     constructor(string memory _greeting) {
-        console.log("Deploying a Greeter with greeting:", _greeting);
+        //console.log("Deploying a Greeter with greeting:", _greeting);
         greeting = _greeting;
     }
 
@@ -25,7 +25,7 @@ contract Greeter {
     /// @dev Contains a console log output
     /// @param _greeting The greeting phrase
     function setGreeting(string memory _greeting) public {
-        console.log("Changing greeting from '%s' to '%s'", greeting, _greeting);
+        //console.log("Changing greeting from '%s' to '%s'", greeting, _greeting);
         greeting = _greeting;
     }
 }
