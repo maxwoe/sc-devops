@@ -10,7 +10,7 @@ stages:
   - report
   - deploy
 
-build:       
+build-src:       
   stage: build
   before_script:
     - npm install
@@ -22,7 +22,7 @@ build:
     paths:
       - artifacts
 
-docgen:       
+build-doc:       
   stage: build
   before_script:
     - npm install
@@ -43,7 +43,7 @@ vulnerability-test 1/2:
   script:
     - echo "Running slither..."
     - slither .
-  allow_failure: true
+  allow_failure: false
 
 vulnerability-test 2/2: 
   stage: test
@@ -59,7 +59,7 @@ vulnerability-test 2/2:
     - pip3 install mythril
   script:
     - myth analyze ./contracts/Greeter.sol
-  allow_failure: true
+  allow_failure: false
 
 lint-test:   
   stage: test 
@@ -78,7 +78,7 @@ unit-test:
     - echo "Running unit tests... "
     - npm run test
 
-coverage:
+coverage-report:
   stage: report
   before_script:
     - npm install 
