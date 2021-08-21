@@ -58,7 +58,7 @@ vulnerability-test 2/2:
 #    - apt-get install -y libssl-dev python3-dev python3-pip
 #    - pip3 install mythril
   script:
-    - analyze ./contracts/Greeter.sol
+    - myth analyze ./contracts/Greeter.sol
   allow_failure: true
 
 lint-test:   
