@@ -59,7 +59,7 @@ vulnerability-test 2/2:
 #    - pip3 install mythril
   script:
     - echo "Running mythril..."
-    - myth analyze ./contracts/Greeter.sol
+    - analyze ./contracts/Greeter.sol
   allow_failure: true
 
 lint-test:   
