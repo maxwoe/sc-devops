@@ -17,7 +17,7 @@ contract Greeter {
 
     /// @notice Returns a greeting phrase
     /// @return Greeting string
-    function greet() public view returns (string memory) {
+    function greet() external view returns (string memory) {
         return greeting;
     }
 
