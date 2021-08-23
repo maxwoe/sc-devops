@@ -58,7 +58,7 @@ vulnerability-test 2/2:
     - apt-get install -y libssl-dev python3-dev python3-pip libleveldb-dev
     - pip3 install mythril
   script:
-    - myth analyze ./contracts/Greeter.sol
+    - ./utils/mythril-chech.sh
   allow_failure: false
 
 lint-test:   
