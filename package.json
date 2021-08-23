@@ -13,6 +13,7 @@
     "coverage": "node --max-old-space-size=4096 ./node_modules/.bin/hardhat coverage --network hardhat --solcoverjs ./.solcover.js",
     "slither": "pip3 install --user slither-analyzer && slither .",
     "mythx": "pip3 install --user mythx-cli && mythx --ci analyze ./contracts",
+    "mythril": "./utils/mythril-check.sh",
     "secret-scan": "pip3 install --user trufflehog3 && trufflehog3 --no-history -v"
   },
   "devDependencies": {
