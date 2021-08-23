@@ -10,7 +10,7 @@ stages:
   - report
   - deploy
 
-build:       
+build-src:       
   stage: build
   before_script:
     - npm install
@@ -22,7 +22,7 @@ build:
     paths:
       - artifacts
 
-docgen:       
+build-doc:       
   stage: build
   before_script:
     - npm install
@@ -36,7 +36,6 @@ docgen:
 
 vulnerability-test 1/2: 
   stage: test
-  needs: []
   before_script:
     - npm install
     - apt-get update && apt-get install -y python3-pip
@@ -44,26 +43,26 @@ vulnerability-test 1/2:
   script:
     - echo "Running slither..."
     - slither .
-  allow_failure: true
+  allow_failure: false
 
 vulnerability-test 2/2: 
   stage: test
-  needs: []
+#  image: mythril/myth
   before_script:
     - apt-get update
-    - apt-et install software-properties-common
+    - apt-get install -y software-properties-common
     - add-apt-repository ppa:ethereum/ethereum
-    - apt-get install solc
-    - apt-get install libssl-dev python3-dev python3-pip
+    - apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 1C52189C923F6CA9
+    - apt-get update
+    - apt-get install -y solc
+    - apt-get install -y libssl-dev python3-dev python3-pip libleveldb-dev
     - pip3 install mythril
   script:
-    - echo "Running mythril..."
-    - mythril analyze ./contracts/Greeter.sol
-  allow_failure: true
+    - myth analyze ./contracts/Greeter.sol
+  allow_failure: false
 
 lint-test:   
   stage: test 
-  needs: []
   before_script:
       - npm install   
   script:
@@ -73,16 +72,14 @@ lint-test:
 
 unit-test:   
   stage: test
-  needs: []
   before_script:
     - npm install    
   script:
     - echo "Running unit tests... "
     - npm run test
 
-coverage:
+coverage-report:
   stage: report
-  needs: []
   before_script:
     - npm install 
   script:
@@ -95,7 +92,6 @@ coverage:
 
 gas-report:
   stage: report
-  needs: []
   before_script:
     - npm install
   script:
