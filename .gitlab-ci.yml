@@ -113,8 +113,9 @@ build-src:
 
 release:
   stage: release
+  before_script:
+    - npm install 
   script:
-    - env
     - npx semantic-release
   only:
     - main
