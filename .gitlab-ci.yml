@@ -30,10 +30,10 @@ variables:
 build-src:       
   stage: build
   before_script:
-    - npm install    
+    #- npm install    
   script:
     - echo "Compiling the code..."
-    - npm run compile
+    #- npm run compile
     - echo "Compile complete."
   artifacts:
     paths:
@@ -127,6 +127,7 @@ release:
   before_script:
     - npm install 
   script:
+    - cat .npmrc
     - npx semantic-release
   only:
     - main
