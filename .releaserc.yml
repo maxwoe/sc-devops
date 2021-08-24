@@ -15,6 +15,7 @@ verifyConditions:
   - '@semantic-release/changelog'
   - '@semantic-release/git'
   - '@semantic-release/gitlab'
+  - '@semantic-release/npm'
 
 # Responsible for determining the type of the next release (major, minor or patch).
 # If multiple plugins with a analyzeCommits step are defined, the release type will be
@@ -40,8 +41,9 @@ generateNotes:
 # and pushing a commit.
 prepare:
   - path: '@semantic-release/changelog'
+  - path: '@semantic-release/npm'
   - path: '@semantic-release/git'
-    message: 'RELEASE: ${nextRelease.version}'
+    message: 'chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}'
     assets: ['CHANGELOG.md', 'package.json']
  
 # Responsible for publishing the release.
