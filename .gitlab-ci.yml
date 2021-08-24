@@ -1,28 +1,31 @@
-image: node:latest
 
-cache:
-  paths:
-    - node_modules
-
-variables:
-  # Package version can only contain numbers (0-9), and dots (.).
-  # Must be in the format of X.Y.Z, i.e. should match /\A\d+\.\d+\.\d+\z/ regular expresion.
-  # See https://docs.gitlab.com/ee/user/packages/generic_packages/#publish-a-package-file
-  PACKAGE_VERSION: "1.2.3"
-  PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/release/${PACKAGE_VERSION}"
 
 stages:          
   - build
   - test
   - report
-  - upload
   - release
   - deploy
   - operate
 
 default:
+  image: node:latest
   before_script:
     - ./utils/setup_env.sh
+    - npm ci --cache .npm --prefer-offline
+    - |
+      {
+        echo "@${CI_PROJECT_ROOT_NAMESPACE}:registry=${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/"
+        echo "${CI_API_V4_URL#https?}/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=\${CI_JOB_TOKEN}"
+      } | tee --append .npmrc
+  key: ${CI_COMMIT_REF_SLUG}
+  cache:
+    paths:
+      - node_modules
+      - .npm/
+
+variables:
+  NPM_TOKEN: ${CI_JOB_TOKEN}
 
 build-src:       
   stage: build
@@ -119,28 +122,7 @@ build-src:
     paths:
       - gas-report.html
 
-upload:
-  stage: upload
-  image: curlimages/curl:latest
-  rules:
-    - if: $CI_COMMIT_TAG
-  script:
-    - |
-      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file artifacts/contracts/Greeter.sol/Greeter.json ${PACKAGE_REGISTRY_URL}/Greeter.json
-   
-release 1/2:
-  # Caution, as of 2021-02-02 these assets links require a login, see:
-  # https://gitlab.com/gitlab-org/gitlab/-/issues/299384
-  stage: release
-  image: registry.gitlab.com/gitlab-org/release-cli:latest
-  rules:
-    - if: $CI_COMMIT_TAG
-  script:
-    - |
-      release-cli create --name "Release $CI_COMMIT_TAG" --tag-name $CI_COMMIT_TAG \
-        --assets-link "{\"name\":\"Greeter.json\",\"url\":\"${PACKAGE_REGISTRY_URL}/Greeter.json\"}"
-
-release 2/2:
+release:
   stage: release
   before_script:
     - npm install 

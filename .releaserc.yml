@@ -42,8 +42,8 @@ prepare:
   - path: '@semantic-release/changelog'
   - path: '@semantic-release/git'
     message: 'RELEASE: ${nextRelease.version}'
-    assets: ['CHANGELOG.md']
-
+    assets: ['CHANGELOG.md', 'package.json']
+ 
 # Responsible for publishing the release.
 publish:
   - path: '@semantic-release/gitlab'
