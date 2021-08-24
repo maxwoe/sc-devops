@@ -1,5 +1,6 @@
 {
   "name": "hardhat-project",
+  "version": "0.0.1",
   "scripts": {
     "prepare": "husky install",
     "clean": "rm -rf abi artifacts cache coverage docs && rm -f coverage.json",
@@ -14,7 +15,10 @@
     "slither": "pip3 install --user slither-analyzer && slither .",
     "mythx": "pip3 install --user mythx-cli && mythx --ci analyze ./contracts",
     "mythril": "./utils/mythril-check.sh",
-    "secret-scan": "pip3 install --user trufflehog3 && trufflehog3 --no-history -v"
+    "secret-scan": "pip3 install --user trufflehog3 && trufflehog3 --no-history -v",
+    "release": "scripts/release/release.sh",
+    "version": "scripts/release/version.sh",
+    "gas-report": "env REPORT_GAS=true npm run test"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
@@ -31,6 +35,7 @@
     "husky": "^7.0.1",
     "prettier": "^2.3.2",
     "prettier-plugin-solidity": "^1.0.0-beta.17",
+    "semantic-release": "^17.4.6",
     "solhint": "^3.3.6",
     "solhint-plugin-prettier": "^0.0.5",
     "solidity-coverage": "^0.7.16"
@@ -43,5 +48,10 @@
     "hardhat-docgen": "^1.1.1",
     "hardhat-preprocessor": "^0.1.4",
     "hardhat-watcher": "^2.1.1"
-  }
+  },
+  "files": [
+    "/contracts/**/*.sol",
+    "/artifacts/contracts/*.json",
+    "!/contracts/mocks/**/*"
+  ]
 }

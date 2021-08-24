@@ -1,13 +1,13 @@
-node_modules
-.env
+abi/
+artifacts/
+build/
+cache/
+coverage/
+docs/
+node_modules/
 
-#Hardhat files
-artifacts
-cache
 
-abi
-docs
-coverage
+*.env
 coverage.json
 gas-report.html
 gas-report.txt

@@ -8,12 +8,15 @@ stages:
   - build
   - test
   - report
+  - release
   - deploy
 
 build-src:       
   stage: build
   before_script:
     - npm install
+    - INFURA_API_KEY=$INFURA_API_KEY
+    - MNEMONIC=$MNEMONIC
   script:
     - echo "Compiling the code..."
     - npm run compile
@@ -26,6 +29,8 @@ build-doc:
   stage: build
   before_script:
     - npm install
+    - INFURA_API_KEY=$INFURA_API_KEY
+    - MNEMONIC=$MNEMONIC
   script:
     - echo "Compiling the code..."
     - npm run docgen
@@ -117,6 +122,19 @@ deploy_staging:
   only:
     - main
 
+release:
+  stage: release
+  script:
+    - env
+    - npx semantic-release
+  only:
+    - master
+  except:
+    refs:
+      - tags
+    variables:
+      - $CI_COMMIT_TITLE =~ /^RELEASE:.+$/
+
 deploy_prod:
   stage: deploy
   when: manual
@@ -142,5 +160,8 @@ verify_delpoy:
     script:
         - npx hardhat --network mainnet etherscan-verify --license NONE --force-license
         - npx hardhat --network mainnet sourcify
+
+
+
     
     
