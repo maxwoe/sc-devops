@@ -1,3 +1,11 @@
+### [1.0.1](https://gitlab.swa.univie.ac.at/woehrea2swa/sc-devops/compare/1.0.0...1.0.1) (2021-08-24)
+
+
+### Bug Fixes
+
+* testing patch releases ([b201cf9](https://gitlab.swa.univie.ac.at/woehrea2swa/sc-devops/commit/b201cf9226fcebb4afa1188f457d7d3dcdb045d8))
+* testing patch releases ([28483ff](https://gitlab.swa.univie.ac.at/woehrea2swa/sc-devops/commit/28483ff81dd31fb114eee4f8553e7f9b49486162))
+
 ## [1.0.0](https://gitlab.swa.univie.ac.at/woehrea2swa/sc-devops/compare/...1.0.0) (2021-08-24)
 
 
