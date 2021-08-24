@@ -6,7 +6,7 @@ tagFormat: '${version}'
 
 # Global plugin options (will be passed to all plugins)
 preset: 'conventionalcommits'
-gitlabUrl: 'https://gitlab.com/' # your gitlab url
+gitlabUrl: 'https://gitlab.swa.univie.ac.at/woehrea2swa/sc-devops' # your gitlab url
 #slackWebhook: 'https://slack.xxx.com/hooks/<key>'
 
 # Responsible for verifying conditions necessary to proceed with the release:
