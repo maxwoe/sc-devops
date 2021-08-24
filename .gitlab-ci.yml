@@ -11,12 +11,14 @@ stages:
   - release
   - deploy
 
+before_script:
+  - echo "INFURA_API_KEY=$INFURA_API_KEY" >> .env
+  - echo "MNEMONIC=$MNEMONIC" >> .env
+
 build-src:       
   stage: build
   before_script:
-    - npm install
-    - INFURA_API_KEY=$INFURA_API_KEY
-    - MNEMONIC=$MNEMONIC
+    - npm install    
   script:
     - echo "Compiling the code..."
     - npm run compile
