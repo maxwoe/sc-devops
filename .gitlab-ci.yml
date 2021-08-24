@@ -18,14 +18,14 @@ default:
         echo "@${CI_PROJECT_ROOT_NAMESPACE}:registry=${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/"
         echo "${CI_API_V4_URL#https?}/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=\${CI_JOB_TOKEN}"
       } | tee --append .npmrc
-  key: ${CI_COMMIT_REF_SLUG}
   cache:
+    key: $CI_COMMIT_REF_SLUG
     paths:
       - node_modules
       - .npm/
 
 variables:
-  NPM_TOKEN: ${CI_JOB_TOKEN}
+  NPM_TOKEN: $CI_JOB_TOKEN
 
 build-src:       
   stage: build
