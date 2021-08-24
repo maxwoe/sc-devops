@@ -11,7 +11,8 @@ stages:
   - release
   - deploy
 
-before_script:
+default:
+  before_script:
     - ./utils/setup_env.sh
 
 build-src:       
