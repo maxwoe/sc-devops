@@ -28,7 +28,7 @@ build-src:
     paths:
       - artifacts
 
-.build-doc:       
+build-doc:       
   stage: build
   before_script:
     - npm install
