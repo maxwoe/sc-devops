@@ -10,6 +10,7 @@ stages:
   - report
   - release
   - deploy
+  - operate
 
 default:
   before_script:
@@ -110,6 +111,19 @@ gas-report:
     paths:
       - gas-report.html
 
+release:
+  stage: release
+  script:
+    - env
+    - npx semantic-release
+  only:
+    - main
+  except:
+    refs:
+      - tags
+    variables:
+      - $CI_COMMIT_TITLE =~ /^RELEASE:.+$/
+
 # Currently contracts are deployed into prod (testnet / mainnet) locally from a developer's machine.
 # The results are saved in deployments dir which is kept in the repository.
 deploy_staging:
@@ -118,24 +132,9 @@ deploy_staging:
   script:
     - echo "Deploy to staging environment"
     - npx hardhat --network ropsten deploy
-  environment:
-    name: staging
-    url: https://staging.example.com
+  environment: staging
   only:
     - main
-
-release:
-  stage: release
-  script:
-    - env
-    - npx semantic-release
-  only:
-    - master
-  except:
-    refs:
-      - tags
-    variables:
-      - $CI_COMMIT_TITLE =~ /^RELEASE:.+$/
 
 deploy_prod:
   stage: deploy
@@ -143,27 +142,20 @@ deploy_prod:
   script:
     - echo "Deploy to production environment"
     - npx hardhat --network mainnet deploy
-  environment:
-    name: production
-    url: https://example.com
+  environment: production
   only:
     - main
 
 verify_staging:
-    stage: deploy
-    when: manual
+    stage: operate
+    needs: [deploy_staging]
     script:
         - npx hardhat --network ropsten etherscan-verify --license UNLICENSED --force-license
         - npx hardhat --network ropsten sourcify
 
 verify_delpoy:
-    stage: deploy
-    when: manual
+    stage: operate
+    needs: [deploy_prod]
     script:
         - npx hardhat --network mainnet etherscan-verify --license NONE --force-license
         - npx hardhat --network mainnet sourcify
-
-
-
-    
-    
