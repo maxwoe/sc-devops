@@ -125,6 +125,7 @@ release:
   before_script:
     - npm install
   script:
+    - cat .npmrc
     - npm run semantic-release
   only:
     - main
