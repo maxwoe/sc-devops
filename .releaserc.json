@@ -7,8 +7,11 @@
         "@semantic-release/gitlab",
         {
           "assets": [
-            { "path": "artifacts", "label": "Artifacts" },
-            { "path": "contracts", "label": "Contract Source" }
+            { "path": "abi.tar.gz", "label": "ABI" },
+            { "path": "artifacts.tar.gz", "label": "Artifacts" },
+            { "path": "docs.tar.gz", "label": "Docs" },
+            { "path": "coverage.tar.gz", "label": "Coverage" },
+            { "path": "gas-report.tar.gz", "label": "Gas Report" }
           ]
         }
       ],

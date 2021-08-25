@@ -38,7 +38,7 @@ build-src:
     paths:
       - artifacts
 
-.build-doc:       
+build-doc:       
   stage: build
   script:
     - echo "Compiling the code..."
@@ -59,7 +59,7 @@ build-src:
 
 .vulnerability-test 2/2: 
   stage: test
-#  image: mythril/myth
+  #image: mythril/myth
   before_script:
     - apt-get update
     - apt-get install -y software-properties-common
@@ -70,6 +70,7 @@ build-src:
     - apt-get install -y libssl-dev python3-dev python3-pip libleveldb-dev
     - pip3 install mythril
   script:
+    - chmod +x ./utils/mythril-check.sh
     - ./utils/mythril-check.sh
   allow_failure: false
 
@@ -86,7 +87,7 @@ build-src:
     - echo "Running unit tests... "
     - npm run test
 
-.coverage-report:
+coverage-report:
   stage: report
   script:
     - echo "Generating code coverage report..."
@@ -96,7 +97,7 @@ build-src:
       - coverage
   allow_failure: true
 
-.gas-report:
+gas-report:
   stage: report
   script:
     - echo "Generating gas report..."
@@ -111,6 +112,11 @@ release:
   stage: release
   script:
     - ls
+    - tar -zcvf abi.tar.gz abi --ignore-failed-read
+    - tar -zcvf docs.tar.gz docs --ignore-failed-read
+    - tar -zcvf artifacts.tar.gz artifacts --ignore-failed-read
+    - tar -zcvf coverage.tar.gz coverage coverage.json --ignore-failed-read
+    - tar -zcvf gas-report.tar.gz gas-report.html gas-report.txt --ignore-failed-read
     - npm run semantic-release
   only:
     - main
