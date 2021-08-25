@@ -3,7 +3,7 @@
   "version": "1.0.7",
   "scripts": {
     "prepare": "husky install",
-    "clean": "rm -rf abi artifacts cache coverage docs && rm -f coverage.json",
+    "clean": "rm -rf abi artifacts build cache coverage docs coverage.json",
     "compile": "npx hardhat compile",
     "test": "npx hardhat test",
     "check": "npx hardhat check",

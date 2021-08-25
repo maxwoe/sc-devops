@@ -9,5 +9,3 @@ echo CODE_COVERAGE=true >> .env
 echo REPORT_GAS=true >> .env
 echo FORKING_URL=$FORKING_URL >> .env
 echo FORKING_BLOCK=$FORKING_BLOCK >> .env
-
-

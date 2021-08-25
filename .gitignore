@@ -6,9 +6,7 @@ coverage/
 docs/
 node_modules/
 
-
 *.env
 coverage.json
 gas-report.html
 gas-report.txt
-.npmrc

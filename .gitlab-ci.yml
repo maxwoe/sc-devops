@@ -36,6 +36,7 @@ build-src:
     - echo "Compile complete."
   artifacts:
     paths:
+      - abi
       - artifacts
 
 build-doc:       
@@ -57,7 +58,7 @@ build-doc:
     - slither .
   allow_failure: false
 
-.vulnerability-test 2/2: 
+vulnerability-test 2/2: 
   stage: test
   #image: mythril/myth
   before_script:
@@ -74,14 +75,14 @@ build-doc:
     - ./utils/mythril-check.sh
   allow_failure: false
 
-.lint-test:   
+lint-test:   
   stage: test 
   script:
     - echo "Linting code..."
     - npm run lint 
     - echo "No lint issues found."
 
-.unit-test:   
+unit-test:   
   stage: test
   script:
     - echo "Running unit tests... "
@@ -95,6 +96,7 @@ coverage-report:
   artifacts:
     paths:
       - coverage
+      - coverage.json
   allow_failure: true
 
 gas-report:
@@ -111,12 +113,11 @@ gas-report:
 release:
   stage: release
   script:
-    - ls
     - tar -zcvf abi.tar.gz abi --ignore-failed-read
     - tar -zcvf docs.tar.gz docs --ignore-failed-read
     - tar -zcvf artifacts.tar.gz artifacts --ignore-failed-read
     - tar -zcvf coverage.tar.gz coverage coverage.json --ignore-failed-read
-    - tar -zcvf gas-report.tar.gz gas-report.html gas-report.txt --ignore-failed-read
+    - tar -zcvf gas-report.tar.gz gas-report.html --ignore-failed-read
     - npm run semantic-release
   only:
     - main

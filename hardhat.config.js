@@ -58,7 +58,7 @@ function getChainConfig(network) {
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
-  solidity: "0.8.7",
+  solidity: "0.8.6",
   paths: {
     sources: "./contracts",
     tests: "./test",
