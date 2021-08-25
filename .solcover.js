@@ -7,9 +7,6 @@ if (!mnemonic) {
 }
 
 module.exports = {
-    //norpc: true,
-    //testCommand: 'npm test',
-    //compileCommand: 'npm run compile',
     istanbulReporter: ["html", "lcov"],
     /*onCompileComplete: async function (_config) {
         await run("typechain");

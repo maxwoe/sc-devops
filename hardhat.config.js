@@ -111,7 +111,6 @@ module.exports = {
   },
   gasReporter: {
     currency: 'EUR',
-    gasPrice: 100,
     enabled: (process.env.REPORT_GAS) ? true : false,
     coinmarketcap: process.env.COINMARKETCAP_API_KEY,
     outputFile: 'gas-report.txt'
