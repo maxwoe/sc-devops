@@ -4,6 +4,7 @@ exclude: # exclude matching issues
       - artifacts/**
       - cache/**
       - node_modules/**
+      - .npm/**
       - package-lock.json
       - .env
 
