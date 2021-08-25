@@ -1,6 +1,6 @@
 {
   "name": "@woehrea2swa/sc-devops",
-  "version": "0.0.1",
+  "version": "1.0.2",
   "scripts": {
     "prepare": "husky install",
     "clean": "rm -rf abi artifacts cache coverage docs && rm -f coverage.json",
