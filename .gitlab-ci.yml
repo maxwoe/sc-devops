@@ -22,14 +22,15 @@ default:
     key: ${CI_COMMIT_REF_SLUG}
     paths:
       - .npm/
+      - node_modules
 
 variables:
   NPM_TOKEN: ${CI_JOB_TOKEN}
 
-.build-src:       
+build-src:       
   stage: build
   before_script:
-    - npm install    
+    #- npm install    
   script:
     - echo "Compiling the code..."
     - npm run compile
@@ -121,6 +122,7 @@ variables:
 
 release:
   stage: release
+  dependencies: [build-src]
   before_script:
     - npm install
     - npm ci --cache .npm --prefer-offline
