@@ -49,12 +49,13 @@ stages:
 
 secrets-test: 
   stage: test
-  before_script:
-    - apt-get update && apt-get install -y python-pip
+  image: python:latest
+  #before_script:
+    #- apt-get update && apt-get install -y python-pip
     #- python3 -m pip install trufflehog3
-    - pip install trufflehog3
   script:
     - echo "Running secrets scanner..."
+    - pip install trufflehog3
     - trufflehog3 --no-history -v
   allow_failure: false
 
