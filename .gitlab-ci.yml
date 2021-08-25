@@ -51,6 +51,7 @@ secrets-test:
   stage: test
   image: python:latest
   before_script:
+    - echo ""
     #- apt-get update && apt-get install -y python-pip
     #- python3 -m pip install trufflehog3
   script:
