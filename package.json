@@ -56,16 +56,12 @@
     "hardhat-watcher": "^2.1.1",
     "semantic-release-slack-bot": "^2.1.1"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://gitlab.swa.univie.ac.at/woehrea2swa/sc-devops.git"
-  },
   "publishConfig": {
     "access": "public"
   },
   "files": [
     "/contracts/**/*.sol",
-    "/artifacts/contracts/*.json",
+    "/artifacts/**/*",
     "!/contracts/mocks/**/*"
   ]
 }
