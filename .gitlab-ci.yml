@@ -31,7 +31,6 @@ variables:
 build-src:       
   stage: build
   script:
-    - npm ci 
     - echo "Compiling the code..."
     - npm run compile
     - echo "Compile complete."
@@ -42,7 +41,6 @@ build-src:
 .build-doc:       
   stage: build
   script:
-    - npm ci
     - echo "Compiling the code..."
     - npm run docgen
     - echo "Compile complete."
@@ -53,7 +51,6 @@ build-src:
 .vulnerability-test 1/2: 
   stage: test
   script:
-    - npm ci
     - apt-get update && apt-get install -y python3-pip
     - pip3 install slither-analyzer
     - echo "Running slither..."
@@ -78,8 +75,6 @@ build-src:
 
 .lint-test:   
   stage: test 
-  before_script:
-      - npm install   
   script:
     - echo "Linting code..."
     - npm run lint 
@@ -87,16 +82,12 @@ build-src:
 
 .unit-test:   
   stage: test
-  before_script:
-    - npm install    
   script:
     - echo "Running unit tests... "
     - npm run test
 
 .coverage-report:
   stage: report
-  before_script:
-    - npm install 
   script:
     - echo "Generating code coverage report..."
     - npm run coverage
@@ -107,8 +98,6 @@ build-src:
 
 .gas-report:
   stage: report
-  before_script:
-    - npm install
   script:
     - echo "Generating gas report..."
     - npm run test # creates gas-report.txt
@@ -121,6 +110,7 @@ build-src:
 release:
   stage: release
   script:
+    - ls
     - npm run semantic-release
   only:
     - main
