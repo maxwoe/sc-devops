@@ -16,7 +16,8 @@
     "mythx": "pip3 install --user mythx-cli && mythx --ci analyze ./contracts",
     "mythril": "./utils/mythril-check.sh",
     "secret-scan": "pip3 install --user trufflehog3 && trufflehog3 --no-history -v",
-    "gas-report": "env REPORT_GAS=true npm run test"
+    "gas-report": "env REPORT_GAS=true npm run test",
+    "semantic-release": "npx semantic-release"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
@@ -53,8 +54,10 @@
     "hardhat-docgen": "^1.1.1",
     "hardhat-preprocessor": "^0.1.4",
     "hardhat-watcher": "^2.1.1",
-    "semantic-release-npm": "^0.0.5",
     "semantic-release-slack-bot": "^2.1.1"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "files": [
     "/contracts/**/*.sol",
