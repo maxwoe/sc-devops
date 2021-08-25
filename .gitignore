@@ -11,3 +11,4 @@ node_modules/
 coverage.json
 gas-report.html
 gas-report.txt
+.npmrc
