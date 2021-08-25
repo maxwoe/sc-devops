@@ -1,5 +1,5 @@
 {
-  "name": "@woehrea2swa/hardhat-project",
+  "name": "@woehrea2swa/sc-devops",
   "version": "0.0.1",
   "scripts": {
     "prepare": "husky install",
