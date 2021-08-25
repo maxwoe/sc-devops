@@ -15,23 +15,23 @@ default:
         echo "@${CI_PROJECT_ROOT_NAMESPACE}:registry=${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/"
         echo "${CI_API_V4_URL#https?}/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=\${CI_JOB_TOKEN}"
       } | tee --append .npmrc
-    - cat ./utils/setup-env.sh
     - chmod +x ./utils/setup-env.sh
     - ./utils/setup-env.sh
   cache:
     key: ${CI_COMMIT_REF_SLUG}
     paths:
       - .npm/
-      - node_modules
+    key: modules
+    paths:
+      - node_modules/
 
 variables:
   NPM_TOKEN: ${CI_JOB_TOKEN}
 
 build-src:       
   stage: build
-  before_script:
-    #- npm install    
   script:
+    - npm ci 
     - echo "Compiling the code..."
     - npm run compile
     - echo "Compile complete."
@@ -41,9 +41,8 @@ build-src:
 
 .build-doc:       
   stage: build
-  before_script:
-    - npm install
   script:
+    - npm ci
     - echo "Compiling the code..."
     - npm run docgen
     - echo "Compile complete."
@@ -53,11 +52,10 @@ build-src:
 
 .vulnerability-test 1/2: 
   stage: test
-  before_script:
-    - npm install
+  script:
+    - npm ci
     - apt-get update && apt-get install -y python3-pip
     - pip3 install slither-analyzer
-  script:
     - echo "Running slither..."
     - slither .
   allow_failure: false
