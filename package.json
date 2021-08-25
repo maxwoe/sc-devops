@@ -61,7 +61,8 @@
     "url": "https://gitlab.swa.univie.ac.at/woehrea2swa/sc-devops.git"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "@woehrea2swa:registry":"https://gitlab.myemployer.com/api/v4/projects/1873/packages/npm/"
   },
   "files": [
     "/contracts/**/*.sol",
