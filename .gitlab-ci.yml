@@ -49,7 +49,7 @@ stages:
 
 secrets-test: 
   stage: test
-  before-script:
+  before_script:
     - apt-get update && apt-get install -y pip
     #- python3 -m pip install trufflehog3
     - pip install trufflehog3
