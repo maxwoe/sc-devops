@@ -6,7 +6,6 @@
       [
         "@semantic-release/gitlab",
         {
-          "gitlabUrl": "https://gitlab.swa.univie.ac.at",
           "assets": [
             { "path": "contracts", "label": "Contract Source" }
           ]
