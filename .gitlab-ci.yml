@@ -122,9 +122,8 @@ variables:
 release:
   stage: release
   before_script:
-    - npm install 
+    - npm install
   script:
-    - cat .npmrc
     - npm run semantic-release
   only:
     - main
