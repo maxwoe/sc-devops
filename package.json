@@ -54,7 +54,6 @@
     "hardhat-docgen": "^1.1.1",
     "hardhat-preprocessor": "^0.1.4",
     "hardhat-watcher": "^2.1.1",
-    "semantic-release-npm": "^0.0.5",
     "semantic-release-slack-bot": "^2.1.1"
   },
   "publishConfig": {
