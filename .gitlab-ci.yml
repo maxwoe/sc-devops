@@ -1,13 +1,5 @@
-stages:          
-  - build
-  - test
-  - report
-  - release
-  - deploy
-  - operate
-
 default:
-  image: node:latest
+  image: node:14.17.4
   before_script:
     - npm ci --cache .npm --prefer-offline
     - |
@@ -21,14 +13,20 @@ default:
     key: ${CI_COMMIT_REF_SLUG}
     paths:
       - .npm/
-    key: modules
-    paths:
       - node_modules/
 
 variables:
   NPM_TOKEN: ${CI_JOB_TOKEN}
 
-build-src:       
+stages:          
+  - build
+  - test
+  - report
+  - release
+  - deploy
+  - operate
+
+.build-src:       
   stage: build
   script:
     - echo "Compiling the code..."
@@ -39,15 +37,24 @@ build-src:
       - abi
       - artifacts
 
-build-doc:       
+.build-doc:       
   stage: build
   script:
-    - echo "Compiling the code..."
+    - echo "Generating docs..."
     - npm run docgen
-    - echo "Compile complete."
+    - echo "Docs generation complete."
   artifacts:
     paths:
       - docs
+
+.secrets-test: 
+  stage: test
+  script:
+    - apt-get update && apt-get install -y python3-pip
+    - pip3 install trufflehog3
+    - echo "Running secrets scanner..."
+    - trufflehog3 --no-history -v
+  allow_failure: false
 
 .vulnerability-test 1/2: 
   stage: test
@@ -58,7 +65,7 @@ build-doc:
     - slither .
   allow_failure: false
 
-vulnerability-test 2/2: 
+.vulnerability-test 2/2: 
   stage: test
   #image: mythril/myth
   before_script:
@@ -75,20 +82,20 @@ vulnerability-test 2/2:
     - ./utils/mythril-check.sh
   allow_failure: false
 
-lint-test:   
+.lint-test:   
   stage: test 
   script:
     - echo "Linting code..."
     - npm run lint 
     - echo "No lint issues found."
 
-unit-test:   
+.unit-test:   
   stage: test
   script:
     - echo "Running unit tests... "
     - npm run test
 
-coverage-report:
+.coverage-report:
   stage: report
   script:
     - echo "Generating code coverage report..."
@@ -99,7 +106,7 @@ coverage-report:
       - coverage.json
   allow_failure: true
 
-gas-report:
+.gas-report:
   stage: report
   script:
     - echo "Generating gas report..."
@@ -110,7 +117,7 @@ gas-report:
     paths:
       - gas-report.html
 
-release:
+.release:
   stage: release
   script:
     - tar -zcvf abi.tar.gz abi --ignore-failed-read
@@ -129,17 +136,18 @@ release:
 
 # Currently contracts are deployed into prod (testnet / mainnet) locally from a developer's machine.
 # The results are saved in deployments dir which is kept in the repository.
-.deploy_staging:
+deploy_staging:
   stage: deploy
   when: manual
   script:
     - echo "Deploy to staging environment"
     - npx hardhat --network ropsten deploy
+    # todo: sync deployments dir to repo
   environment: staging
   only:
     - main
 
-.deploy_prod:
+deploy_prod:
   stage: deploy
   when: manual
   script:
@@ -149,16 +157,16 @@ release:
   only:
     - main
 
-.verify_staging:
+verify_staging:
     stage: operate
     needs: [deploy_staging]
     script:
         - npx hardhat --network ropsten etherscan-verify --license UNLICENSED --force-license
-        - npx hardhat --network ropsten sourcify
+        # - npx hardhat --network ropsten sourcify # alternative
 
-.verify_delpoy:
+verify_delpoy:
     stage: operate
     needs: [deploy_prod]
     script:
         - npx hardhat --network mainnet etherscan-verify --license NONE --force-license
-        - npx hardhat --network mainnet sourcify
+        # - npx hardhat --network mainnet sourcify # alternative

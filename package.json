@@ -1,9 +1,9 @@
 {
   "name": "@woehrea2swa/sc-devops",
-  "version": "1.0.8",
+  "version": "1.0.0",
   "scripts": {
     "prepare": "husky install",
-    "clean": "rm -rf abi artifacts build cache coverage docs coverage.json",
+    "clean": "rm -rf abi artifacts build cache coverage docs coverage.json gas-report.html gas-report.txt",
     "compile": "npx hardhat compile",
     "test": "npx hardhat test",
     "check": "npx hardhat check",
