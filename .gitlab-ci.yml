@@ -50,8 +50,7 @@ stages:
 secrets-test: 
   stage: test
   image: python:latest
-  before_script:
-    - true # noop
+  before_script: [":"]
   script:
     - echo "Running secrets scanner..."
     - pip install trufflehog3
