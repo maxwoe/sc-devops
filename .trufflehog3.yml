@@ -3,6 +3,7 @@ exclude: # exclude matching issues
     paths:
       - artifacts/**
       - cache/**
+      - deployments/**
       - node_modules/**
       - .npm/**
       - package-lock.json
