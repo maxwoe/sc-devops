@@ -1,5 +1,3 @@
-
-
 stages:          
   - build
   - test
@@ -17,6 +15,8 @@ default:
         echo "@${CI_PROJECT_ROOT_NAMESPACE}:registry=${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/"
         echo "${CI_API_V4_URL#https?}/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=\${CI_JOB_TOKEN}"
       } | tee --append .npmrc
+    - cat ./utils/setup-env.sh
+    - chmod +x ./utils/setup-env.sh
     - ./utils/setup-env.sh
   cache:
     key: ${CI_COMMIT_REF_SLUG}
