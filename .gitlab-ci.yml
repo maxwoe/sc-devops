@@ -146,10 +146,9 @@ deploy_staging:
   when: manual
   script:
     - echo "Deploy to staging environment"
-    #- npx hardhat --network ropsten deploy
-    - mkdir deployments
+    - npx hardhat --network ropsten deploy
     # Move generated files
-    - mv deployments "${CI_COMMIT_SHA}"
+    - mv /deployments "${CI_COMMIT_SHA}"
   environment: staging
   only:
     - main
