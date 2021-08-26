@@ -180,10 +180,10 @@ deploy_staging:
         - npx hardhat run --network mainnet scripts/verify.js
 
 .git:push:
-  image:
-    entrypoint: ['']
-    name: alpine/git:${GIT_VERSION}
-  stage: deploy
+  #image:
+  #  entrypoint: ['']
+  #  name: alpine/git:${GIT_VERSION}
+  extends: default
   before_script:
     # Clone the repository via HTTPS inside a new directory
     #- git clone "https://${GITLAB_USERNAME}:${GITLAB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git" "${CI_COMMIT_SHA}"
