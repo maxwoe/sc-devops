@@ -178,7 +178,7 @@ verify_staging:
         #- npx hardhat --network ropsten sourcify
         - npx hardhat run --network ropsten scripts/verify.js
 
-.verify_delpoy:
+verify_delpoy:
     stage: operate
     needs: [deploy_prod]
     script:
