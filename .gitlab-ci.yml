@@ -206,7 +206,10 @@ deploy_staging:
 
         # Commit all changes
         git commit -m "Updated by job with ID: $CI_JOB_ID"
+        #git commit -m "[ci skip] updated timelog.log at $CURRENTDATE"
 
         # Update the repository and make sure to skip the pipeline create for this commit
-        git push origin "${CI_DEFAULT_BRANCH}" -o ci.skip
+        #git push origin "${CI_DEFAULT_BRANCH}" -o ci.skip 
+        git push -o ci-skip http://gitlab-ci-token:$CI_JOB_TOKEN@$CI_SERVER_HOST/$CI_PROJECT_PATH.git
+
       fi
