@@ -147,7 +147,7 @@ deploy_staging:
   script:
     - echo "Deploy to staging environment"
     - npx hardhat --network ropsten deploy
-    - mv deployments "${CI_COMMIT_SHA}"
+    - rsync -a deployments "${CI_COMMIT_SHA}"
   environment: staging
   only:
     - main
