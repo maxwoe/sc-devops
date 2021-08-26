@@ -205,7 +205,7 @@ deploy_staging:
         git status
 
         # Commit all changes
-        git commit -m "${COMMIT_MESSAGE}"
+        git commit -m "pipeline commit"
 
         # Update the repository and make sure to skip the pipeline create for this commit
         git push origin "${CI_DEFAULT_BRANCH}" -o ci.skip
