@@ -198,14 +198,13 @@ deploy_staging:
     # Add all generated files to Git
     - git add .
     - CHANGES=$(git status --porcelain | wc -l)
-    - >
-      if ["$CHANGES" -gt "0"]; then
+    - if ["$CHANGES" -gt "0"]; then
         # Show the status of files that are about to be created, updated or deleted
-        git status
+    - git status
 
         # Commit all changes
-        git commit -m "${COMMIT_MESSAGE}"
+    - git commit -m "${COMMIT_MESSAGE}"
 
         # Update the repository and make sure to skip the pipeline create for this commit
-        git push origin "${CI_DEFAULT_BRANCH}" -o ci.skip
-      fi
+    - git push origin "${CI_DEFAULT_BRANCH}" -o ci.skip
+    - fi
