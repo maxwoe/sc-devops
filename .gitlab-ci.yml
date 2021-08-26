@@ -193,18 +193,17 @@ deploy_staging:
     - git config --global user.email "${GIT_USER_EMAIL:-$GITLAB_USER_EMAIL}"
     - git config --global user.name "${GIT_USER_NAME:-$GITLAB_USER_NAME}"
   after_script:
-    # Go to the new directory
-    - cd "${CI_COMMIT_SHA}"
-    # Add all generated files to Git
-    - git add .
-    - CHANGES=$(git status --porcelain | wc -l)
-    - if ["$CHANGES" -gt "0"]; then
+    - |-
+      # Check if we have modifications to commit
+      CHANGES=$(git status --porcelain | wc -l)
+
+      if [ "$CHANGES" -gt "0" ]; then
         # Show the status of files that are about to be created, updated or deleted
-    - git status
+        git status
 
         # Commit all changes
-    - git commit -m "${COMMIT_MESSAGE}"
+        git commit -m "${COMMIT_MESSAGE}"
 
         # Update the repository and make sure to skip the pipeline create for this commit
-    - git push origin "${CI_DEFAULT_BRANCH}" -o ci.skip
-    - fi
+        git push origin "${CI_DEFAULT_BRANCH}" -o ci.skip
+      fi
