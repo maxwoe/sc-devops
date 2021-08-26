@@ -146,7 +146,8 @@ deploy_staging:
   when: manual
   script:
     - echo "Deploy to staging environment"
-    - npx hardhat --network ropsten deploy
+    #- npx hardhat --network ropsten deploy
+    - mkdir deployments
     # Move generated files
     - mv deployments "${CI_COMMIT_SHA}"
   environment: staging
@@ -196,10 +197,8 @@ deploy_staging:
     - cd "${CI_COMMIT_SHA}"
     # Add all generated files to Git
     - git add .
-    - >
-      # Check if we have modifications to commit
-      CHANGES=$(git status --porcelain | wc -l)
-
+    - CHANGES=$(git status --porcelain | wc -l)
+    - |
       if ["$CHANGES" -gt "0"]; then
         # Show the status of files that are about to be created, updated or deleted
         git status
