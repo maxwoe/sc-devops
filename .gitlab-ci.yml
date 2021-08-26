@@ -184,12 +184,15 @@ verify_staging:
         #- npx hardhat --network mainnet sourcify
         - npx hardhat run --network mainnet scripts/verify.js
 
+# https://dev.to/ranb2002/how-to-push-to-a-git-repository-from-a-gitlab-ci-pipeline-4ikp
+# https://gitlab.com/guided-explorations/gitlab-ci-yml-tips-tricks-and-hacks/commit-to-repos-during-ci/commit-to-repos-during-ci/-/blob/master/.gitlab-ci.yml
 .git:push:
   #image:
   #  entrypoint: ['']
   #  name: alpine/git:${GIT_VERSION}
   extends: default
   before_script:
+    - apt-get install rsync
     # Clone the repository via HTTPS inside a new directory
     - git clone "https://root:$GITLAB_TOKEN@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git" "${CI_COMMIT_SHA}"
     # Set the displayed user with the commits that are about to be made
@@ -213,5 +216,4 @@ verify_staging:
        
         # Update the repository and make sure to skip the pipeline create for this commit
         git push origin "${CI_DEFAULT_BRANCH}" -o ci.skip 
-        #git push -o ci-skip http://root:$GITLAB_TOKEN@$CI_SERVER_HOST/$CI_PROJECT_PATH.git
       fi
