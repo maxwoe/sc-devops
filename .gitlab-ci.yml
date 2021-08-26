@@ -151,6 +151,9 @@ deploy_staging:
   environment: staging
   only:
     - main
+  artifacts:
+    paths:
+      - deployments
 
 .deploy_prod:
   stage: deploy
@@ -161,6 +164,9 @@ deploy_staging:
   environment: production
   only:
     - main
+  artifacts:
+    paths:
+      - deployments
 
 verify_staging:
     stage: operate
