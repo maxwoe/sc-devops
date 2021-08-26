@@ -1,7 +1,7 @@
 variables:
   NPM_TOKEN: ${CI_JOB_TOKEN}
   GIT_VERSION: v2.30.2 # https://hub.docker.com/r/alpine/git/tags
-  NODE_VERSION: v14.17.4
+  NODE_VERSION: 16.7.0
 
 default:
   image: node:${NODE_VERSION}
