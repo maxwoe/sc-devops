@@ -197,7 +197,6 @@ deploy_staging:
     # Add all generated files to Git
     - git add .
     - |
-      # Check if we have modifications to commit
       CHANGES=$(git status --porcelain | wc -l)
 
       if ["$CHANGES" -gt "0"]; then
