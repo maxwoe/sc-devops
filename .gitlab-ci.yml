@@ -192,7 +192,7 @@ verify_staging:
   #  name: alpine/git:${GIT_VERSION}
   extends: default
   before_script:
-    - apt-get install rsync
+    - apt-get update && apt-get install -y rsync
     # Clone the repository via HTTPS inside a new directory
     - git clone "https://root:$GITLAB_TOKEN@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git" "${CI_COMMIT_SHA}"
     # Set the displayed user with the commits that are about to be made
