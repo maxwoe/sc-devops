@@ -185,7 +185,7 @@ verify_staging:
   extends: default
   before_script:
     # Clone the repository via HTTPS inside a new directory
-    - git clone "https://root:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git" "${CI_COMMIT_SHA}"
+    - git clone "https://root:$GITLAB_TOKEN@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git" "${CI_COMMIT_SHA}"
     # Set the displayed user with the commits that are about to be made
     - git config --global user.email "${GIT_USER_EMAIL:-$GITLAB_USER_EMAIL}"
     - git config --global user.name "${GIT_USER_NAME:-$GITLAB_USER_NAME}"
@@ -206,6 +206,6 @@ verify_staging:
         git commit -m "Updated by job with ID: $CI_JOB_ID [ci skip]"
        
         # Update the repository and make sure to skip the pipeline create for this commit
-        #git push origin "${CI_DEFAULT_BRANCH}" -o ci.skip 
-        git push -o ci-skip http://root:$GITLAB_TOKEN@$CI_SERVER_HOST/$CI_PROJECT_PATH.git
+        git push origin "${CI_DEFAULT_BRANCH}" -o ci.skip 
+        #git push -o ci-skip http://root:$GITLAB_TOKEN@$CI_SERVER_HOST/$CI_PROJECT_PATH.git
       fi
