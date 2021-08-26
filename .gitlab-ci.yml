@@ -192,6 +192,10 @@ deploy_staging:
     - git config --global user.email "${GIT_USER_EMAIL:-$GITLAB_USER_EMAIL}"
     - git config --global user.name "${GIT_USER_NAME:-$GITLAB_USER_NAME}"
   after_script:
+    # Go to the new directory
+    - cd "${CI_COMMIT_SHA}"
+    # Add all generated files to Git
+    - git add .
     - |-
       # Check if we have modifications to commit
       CHANGES=$(git status --porcelain | wc -l)
