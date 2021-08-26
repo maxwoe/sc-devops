@@ -137,9 +137,9 @@ stages:
     variables:
       - $CI_COMMIT_TITLE =~ /^RELEASE:.+$/
 
-# Currently contracts are deployed into prod (testnet / mainnet) locally from a developer's machine.
-# The results are saved in deployments dir which is kept in the repository.
-# TODO: If pipeline deploys - sync deployments dir to repo
+# Typically contracts are deployed into prod (testnet / mainnet) locally from a developer's machine. 
+# This job can automated that task.
+# The deployment results are saved in deployments dir which is kept in the repository.
 deploy_staging:
   stage: deploy
   extends: .git:push
