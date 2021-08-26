@@ -28,7 +28,7 @@ stages:
   - deploy
   - operate
 
-.build-src:       
+build-src:       
   stage: build
   script:
     - echo "Compiling the code..."
@@ -39,7 +39,7 @@ stages:
       - abi
       - artifacts
 
-.build-doc:       
+build-doc:       
   stage: build
   script:
     - echo "Generating docs..."
@@ -49,7 +49,7 @@ stages:
     paths:
       - docs
 
-.secrets-test: 
+secrets-test: 
   stage: test
   image: python:latest
   before_script: [":"] # noop, override default before_script
@@ -59,7 +59,7 @@ stages:
     - trufflehog3 --no-history -v
   allow_failure: false
 
-.vulnerability-test 1/2: 
+vulnerability-test 1/2: 
   stage: test
   script:
     - apt-get update && apt-get install -y python3-pip
@@ -68,7 +68,7 @@ stages:
     - slither .
   allow_failure: false
 
-.vulnerability-test 2/2: 
+vulnerability-test 2/2: 
   stage: test
   #image: mythril/myth
   before_script:
@@ -85,20 +85,20 @@ stages:
     - ./utils/mythril-check.sh
   allow_failure: false
 
-.lint-test:   
+lint-test:   
   stage: test 
   script:
     - echo "Linting code..."
     - npm run lint 
     - echo "No lint issues found."
 
-.unit-test:   
+unit-test:   
   stage: test
   script:
     - echo "Running unit tests... "
     - npm run test
 
-.coverage-report:
+coverage-report:
   stage: report
   script:
     - echo "Generating code coverage report..."
@@ -109,7 +109,7 @@ stages:
       - coverage.json
   allow_failure: true
 
-.gas-report:
+gas-report:
   stage: report
   script:
     - echo "Generating gas report..."
@@ -120,7 +120,7 @@ stages:
     paths:
       - gas-report.html
 
-.release:
+release:
   stage: release
   script:
     - tar -zcvf abi.tar.gz abi --ignore-failed-read
@@ -155,12 +155,14 @@ deploy_staging:
     paths:
       - deployments
 
-.deploy_prod:
+deploy_prod:
   stage: deploy
+  extends: .git:push
   when: manual
   script:
     - echo "Deploy to production environment"
     - npx hardhat --network mainnet deploy
+    - rsync -a deployments "${CI_COMMIT_SHA}"
   environment: production
   only:
     - main
