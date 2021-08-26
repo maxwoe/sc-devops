@@ -196,7 +196,7 @@ deploy_staging:
     - cd "${CI_COMMIT_SHA}"
     # Add all generated files to Git
     - git add .
-    - |-
+    - >
       # Check if we have modifications to commit
       CHANGES=$(git status --porcelain | wc -l)
 
