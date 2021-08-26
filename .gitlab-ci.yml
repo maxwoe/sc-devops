@@ -198,7 +198,7 @@ deploy_staging:
     # Add all generated files to Git
     - git add .
     - CHANGES=$(git status --porcelain | wc -l)
-    - |
+    - >
       if ["$CHANGES" -gt "0"]; then
         # Show the status of files that are about to be created, updated or deleted
         git status
