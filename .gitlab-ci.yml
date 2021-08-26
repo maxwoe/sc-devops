@@ -1,5 +1,10 @@
+variables:
+  NPM_TOKEN: ${CI_JOB_TOKEN}
+  GIT_VERSION: v2.30.2 # https://hub.docker.com/r/alpine/git/tags
+  NODE_VERSION: v16.7.0
+
 default:
-  image: node:14.17.4
+  image: node:${NODE_VERSION}
   before_script:
     - npm ci --cache .npm --prefer-offline
     - |
@@ -15,9 +20,6 @@ default:
       - .npm/
       - node_modules/
 
-variables:
-  NPM_TOKEN: ${CI_JOB_TOKEN}
-
 stages:          
   - build
   - test
@@ -26,7 +28,7 @@ stages:
   - deploy
   - operate
 
-build-src:       
+.build-src:       
   stage: build
   script:
     - echo "Compiling the code..."
@@ -37,7 +39,7 @@ build-src:
       - abi
       - artifacts
 
-build-doc:       
+.build-doc:       
   stage: build
   script:
     - echo "Generating docs..."
@@ -47,7 +49,7 @@ build-doc:
     paths:
       - docs
 
-secrets-test: 
+.secrets-test: 
   stage: test
   image: python:latest
   before_script: [":"] # noop, override default before_script
@@ -57,7 +59,7 @@ secrets-test:
     - trufflehog3 --no-history -v
   allow_failure: false
 
-vulnerability-test 1/2: 
+.vulnerability-test 1/2: 
   stage: test
   script:
     - apt-get update && apt-get install -y python3-pip
@@ -66,7 +68,7 @@ vulnerability-test 1/2:
     - slither .
   allow_failure: false
 
-vulnerability-test 2/2: 
+.vulnerability-test 2/2: 
   stage: test
   #image: mythril/myth
   before_script:
@@ -83,20 +85,20 @@ vulnerability-test 2/2:
     - ./utils/mythril-check.sh
   allow_failure: false
 
-lint-test:   
+.lint-test:   
   stage: test 
   script:
     - echo "Linting code..."
     - npm run lint 
     - echo "No lint issues found."
 
-unit-test:   
+.unit-test:   
   stage: test
   script:
     - echo "Running unit tests... "
     - npm run test
 
-coverage-report:
+.coverage-report:
   stage: report
   script:
     - echo "Generating code coverage report..."
@@ -107,7 +109,7 @@ coverage-report:
       - coverage.json
   allow_failure: true
 
-gas-report:
+.gas-report:
   stage: report
   script:
     - echo "Generating gas report..."
@@ -118,7 +120,7 @@ gas-report:
     paths:
       - gas-report.html
 
-release:
+.release:
   stage: release
   script:
     - tar -zcvf abi.tar.gz abi --ignore-failed-read
@@ -137,18 +139,21 @@ release:
 
 # Currently contracts are deployed into prod (testnet / mainnet) locally from a developer's machine.
 # The results are saved in deployments dir which is kept in the repository.
+# TODO: If pipeline deploys - sync deployments dir to repo
 deploy_staging:
   stage: deploy
+  extends: .git:push
   when: manual
   script:
     - echo "Deploy to staging environment"
     - npx hardhat --network ropsten deploy
-    # todo: sync deployments dir to repo
+    # Move generated files
+    - mv deployments "${CI_COMMIT_SHA}"
   environment: staging
   only:
     - main
 
-deploy_prod:
+.deploy_prod:
   stage: deploy
   when: manual
   script:
@@ -158,16 +163,48 @@ deploy_prod:
   only:
     - main
 
-verify_staging:
+.verify_staging:
     stage: operate
     needs: [deploy_staging]
     script:
-        - npx hardhat --network ropsten etherscan-verify --license UNLICENSED --force-license
-        # - npx hardhat --network ropsten sourcify # alternative
+        #- npx hardhat --network ropsten etherscan-verify --license UNLICENSED --force-license
+        #- npx hardhat --network ropsten sourcify
+        - npx hardhat run --network ropsten scripts/verify.js
 
-verify_delpoy:
+.verify_delpoy:
     stage: operate
     needs: [deploy_prod]
     script:
-        - npx hardhat --network mainnet etherscan-verify --license NONE --force-license
-        # - npx hardhat --network mainnet sourcify # alternative
+        #- npx hardhat --network mainnet etherscan-verify --license NONE --force-license
+        #- npx hardhat --network mainnet sourcify
+        - npx hardhat run --network mainnet scripts/verify.js
+
+.git:push:
+  image:
+    entrypoint: ['']
+    name: alpine/git:${GIT_VERSION}
+  stage: deploy
+  before_script:
+    # Clone the repository via HTTPS inside a new directory
+    #- git clone "https://${GITLAB_USERNAME}:${GITLAB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git" "${CI_COMMIT_SHA}"
+    - it clone "https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git" "${CI_COMMIT_SHA}"
+    # Set the displayed user with the commits that are about to be made
+    - git config --global user.email "${GIT_USER_EMAIL:-$GITLAB_USER_EMAIL}"
+    - git config --global user.name "${GIT_USER_NAME:-$GITLAB_USER_NAME}"
+  after_script:
+    # Go to the new directory
+    - cd "${CI_COMMIT_SHA}"
+    # Add all generated files to Git
+    - git add .
+    - |-
+      # Check if we have modifications to commit
+      CHANGES=$(git status --porcelain | wc -l)
+
+      if ["$CHANGES" -gt "0"]; then
+        # Show the status of files that are about to be created, updated or deleted
+        git status
+        # Commit all changes
+        git commit -m "(chore): pipeline changes"
+        # Update the repository and make sure to skip the pipeline create for this commit
+        git push origin "${CI_DEFAULT_BRANCH}" -o ci.skip
+      fi

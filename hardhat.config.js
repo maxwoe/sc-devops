@@ -46,8 +46,10 @@ function getChainConfig(network) {
       path: "m/44'/60'/0'/0",
     },
     chainId: chainIds[network],
-    tags: network === "ropsten" && ["staging"] || network === "mainnet" && ["production"] || [],
+    tags: network === "mainnet" && ["production"] || ["staging"],
     url,
+    live: network === "mainnet" && true || false,
+    saveDeployments: true,
   };
 }
 
