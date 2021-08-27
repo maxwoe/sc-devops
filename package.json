@@ -12,7 +12,7 @@
     "verify:production": "npx hardhat run --network mainnet scripts/verify.js",
     "check": "npx hardhat check",
     "docgen": "npx hardhat docgen",
-    "sizer": "npx hardhat size-contracts",
+    "size-contracts": "npx hardhat size-contracts",
     "lint": "npm run lint:sol && npm run lint:js",
     "lint:js": "npx eslint .",
     "lint:js:fix": "npx eslint . --fix",

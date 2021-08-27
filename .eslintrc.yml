@@ -1,0 +1,20 @@
+---
+env:
+  commonjs: true
+  es2021: true
+  node: true
+plugins:
+  - prettier
+rules:
+  prettier/prettier: error
+extends:
+  - standard
+  # Itegrates Prettier into ESLint
+  # Thus, eslint --fix not only auto-fixes regular ESLint rules, but also formats code (Prettier-style)
+  - plugin:prettier/recommended
+overrides:
+  - files:
+      - test/**/*.js
+    rules:
+      no-undef:
+        - off

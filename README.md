@@ -2,27 +2,7 @@
 
 This repository contains a Solidity sample project that builds on [hardhat](https://github.com/nomiclabs/hardhat) as a development environment and demonstrates a DevOps approach with Continuous Integration/Continuous Delivery using Gitlab CI.
 
-## Prerequisites
-
-`Node.js` and `npm` are required.  
-For development, the following versions were used:
-
-- `Node.js` – v16.7.0
-- `npm` – 7.20.3
-
-## Installation
-
-Run `npm install` to install all dependencies specified in `package.json` and prepare husky hooks.
-
-## General Project Structure
-
-- The standard `package.json` file with several helpful script commands
-- `hardhat.config.js` file with prepared settings for dev and prod networks
-- `.env` file for custom variables
-- `.husky` folder containing pre-commit hooks configuration
-- Multiple configuration files in the project root for additional developers tools
-
-### Excerpt of Important Tools
+## Tool Setup
 
 - [eslint](https://eslint.org/): A linting utility for JS code
 - [ethers.js](https://github.com/ethers-io/ethers.js/): General purpose Ethereum library and wallet implementation 
@@ -42,57 +22,95 @@ Run `npm install` to install all dependencies specified in `package.json` and pr
 - [trufflehog3](https://github.com/feeltheajf/trufflehog3): A secret scanner that searches through git repositories for secrets
 - [waffle](https://github.com/EthWorks/Waffle): Tooling for writing smart contract tests
 
+## Usage
+
+### Prerequisites
+
+`Node.js` and `npm` are required. The following versions were used:
+
+- `Node.js` – v16.7.0
+- `npm` – 7.20.3
+
+
+### Installation
+
+Run `npm install` to install above tools (all dependencies specified in `package.json`) and prepare husky (pre-commit) hooks.
+
 ### Configuration
 
-#### `hardhat.config.js`
+- `hardhat.config.js`: The file contains the configuration for setting up the development environment and the blockchain connection. For more information read [hardhat configuration](https://hardhat.org/config/).
+- `.env` (_Needs to be created manually_): For development an `.env` file containing several environment variables must exist in the root directory of the project. The provided `.env.example` file serves as a template. At the moment the most important entries are the following:
+  - `INFURA_API_KEY`: The project does not use its own Ethereum node, so an external provider, Infura, is used. To get the key visit the [infura website](https://infura.io/).
+  - `MNEMONIC`= Mnemonic phrase of the HD wallet used for interacting with the networks (i.e. private key). Contracts are provisioned from an account (derived from the mnemonic) which should have enough funds to provision the contracts.
+  - `ETHERSCAN_API_KEY`: Block explorer key needed for contract verification.
+  - `COINMARKETCAP_API_KEY`: Crypto data provider used to fetch exchange rates for gas fee calcualtion in gas reports.
+- In addition, there are several configuration files for the above tools in the project root. For more details, please refer to the respective documentation.
 
-The file contains the configuration for setting up the development environment and the blockchain connection. For more information read [hardhat configuration](https://hardhat.org/config/).
+### General Project Structure
 
-#### `.env` _Needs to be created manually_
+- The standard `package.json` file with several helpful script commands
+- `.husky` folder contains pre-commit hooks configuration
+- `contracts` folder contains Solidity files
+- `deploy` folder contains deployment scripts for hardhat-deploy
+- `scripts` folder contains useful general purpose scripts for development
+- `tasks` folder contains custom hardhat tasks
+- `test` folder contains mocha test files
+- `utils` folder contains helpful dev scripts
+- The projet `root` contains configuration files
+- When running tasks additional folders containing generated artifacts are created (e.g., abi, artifacts, docs, etc.)
 
-For development an `.env` file containing several environment variables must exist in the root directory of the project. The provided `.env.example` file serves as a template. At the moment the most important entries are the following:
+### Commands
 
-- `INFURA_API_KEY`: The project does not use its own Ethereum node, so an external provider, Infura, is used. To get the key visit the [infura website](https://infura.io/).
-- `MNEMONIC`= Mnemonic phrase of the HD wallet used for interacting with the networks (i.e. private key). Contracts are provisioned from an account (determined from the private key), which should have enough funds to provision the contracts.
-- `ETHERSCAN_API_KEY`: Block explorer key needed for contract verification.
-- `COINMARKETCAP_API_KEY`: Crypto data provider used to fetch exchange rates for gas fee calcualtion in gas reports.
+The standard package.json file contains several helpful script commands:
 
-Several configs for additional developers tools
+- npm run lint:[ sol | js ]  -  Lint the Solidity/JS code  
+- npm run lint:js   -  Lint the JS code  
+- npm run compile   - Compile smart contracts with hardhat  
+- npm run test      - Run mocha tests under /test folder  
+- npm run docgen    - Generate docs  
+- npm run coverage  - Generate code coverage configured by .solcover.js  
+- npm run gas-report - Generates a gas-report 
+- npm run slither   - Static analysis of smart contracts with slither  
+- npm run mythril   - Static analysis of smart contracts with mythril  
+- npm run clean     - Delete build artifacts  
+- npm run deploy:staging - Deploy smart contracts to ropsten/mainnet  
+- npm run verify:[ staging | production ] - Verify smart contracts for ropsten/mainnet
 
-Commands npm scripts
+## DevOps (CI/CD) using Gitlab CI
 
-npm run lint:[ sol | js ]  -  Lint the Solidity/JS code  
-npm run lint:js   -  Lint the JS code  
-npm run compile   - Compile smart contracts with hardhat  
-npm run test      - Run mocha tests under /test folder  
-npm run docgen    - Generate docs  
-npm run coverage  - Generate code coverage configured by .solcover.js  
-npm run slither   - Static analysis of smart contracts with slither  
-npm run mythril   - Static analysis of smart contracts with mythril  
-npm run clean     - Delete build artifacts  
-npm run deploy:staging - Deploy smart contracts to ropsten/mainnet  
-npm run verify:[staging | production] - Verify smart contracts for ropsten/mainnet
+The Gitlab CI pipeline configured with `.gitlab-ci.yml` automates several of the above mentioned tasks and is triggered on each commit to the main branch.
+The project is configured with a pre-commit hook to ensure that source files pass linting before a commit can take place.
 
-### General Workflow
+### Setup
 
-#### Pre-commit hooks
+The env variables must be provisioned to the pipeline through Settings>CI/CD>Variables. In addition a GITLAB_TOKEN secret (masked) access-token variable with api and write permission must be provided. This token can be generated by navigating to Project>Settings>Access Tokens.  
 
-Linting Smart Contracts  
-Scanning for Secrets
+### Stages
 
-### DevOps (CI/CD) using Gitlab CI
+The pipeline contains the following stages:  
+Build > Test > Report > Release > Deploy > Operate
 
-- Basically this allows versioning (major/minor/patch) based on commit [prefixes](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#type). As part of publishing a package, semantic-release bumps the version in package.json. Further, it automates the publishing of NPM packages to GitLab's Package Registry and auto-generates releases on the Releases page. In order for this to work, the pipeline requires a custom environment variable named GITLAB_TOKEN or GL_TOKEN, a project access token with API scope. This token can be generated by navigating to Project > Settings > Access Tokens. Be sure to mask this variable (otherwise it may be printed in plaintext in the job output).
+#### Build
+The build step compiles sources and includes ABI and documentation generation.
 
-#### Generated Artifacts
+#### Test
+The test step runs lint, unit and vulnerability analysis test jobs and scans the repo for accidentally committed secrets.
 
-- `abi` folder containing the smart contract ABIs after compilation
-- `docs` folder containing the documentation derived from NatSpec annotations in smart contracts
-- `deployments` folder
+#### Report
+The report step generates test coverage and gas reports.
 
-#### Improvement Roadmap
+#### Release
+The release step allows versioning (major/minor/patch) based on commit [prefixes](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#type). As part of publishing a package, semantic-release bumps the version in package.json. Further, it automates the publishing of NPM packages to GitLab's Package Registry and auto-generates releases on the Releases page.
 
-- CI/CD pipeline could be optimized to run several tasks in parallel, not waiting on the outcome of previous steps (e.g., lint-test does not need to wait for build step).
+#### Deploy
+The deploy step deploys smart contracts, deployment results are synced back to the repo (within the deployments folder).
+
+#### Operate
+The operate step verifies deployed smart contracts through Etherscan.
+
+## Improvement Roadmap
+
+- The CI/CD pipeline could be optimized to run several tasks in parallel, not waiting on the outcome of previous steps (e.g., lint-test does not need to wait for build step).
 - Vulnerability tests run against contracts folder containing Solidity files which may contain hardhat proprietary console.log statements. This leads to issues during vulnerability tests.
   With `npx hardhat preprocess --network mainnet --dest contracts_preprocessed` sources can be preprocessed. It would be better to instrument vulnerability tests on preprocessed sources.
 - Use TypeScript for static typing and employ TypeChain to use TypeScript bindings for Ethereum smart contracts.

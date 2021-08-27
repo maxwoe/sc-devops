@@ -1,0 +1,15 @@
+# directories
+.npm/
+abi/
+artifacts/
+build/
+cache/
+coverage/
+docs/
+deployments/
+node_modules/
+
+# files
+*.env
+*.log
+coverage.json
