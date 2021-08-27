@@ -2,6 +2,7 @@ exclude: # exclude matching issues
   - message: Exclude
     paths:
       - artifacts/**
+      - build/**
       - cache/**
       - deployments/**
       - node_modules/**
