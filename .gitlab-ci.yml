@@ -1,6 +1,5 @@
 variables:
   NPM_TOKEN: ${CI_JOB_TOKEN}
-  GIT_VERSION: v2.30.2 # https://hub.docker.com/r/alpine/git/tags
   NODE_VERSION: 16.7.0
 
 default:
@@ -20,7 +19,7 @@ default:
       - .npm/
       - node_modules/
 
-stages:          
+stages:
   - build
   - test
   - report
@@ -28,7 +27,7 @@ stages:
   - deploy
   - operate
 
-build-src:       
+build-src:
   stage: build
   script:
     - echo "Compiling the code..."
@@ -39,7 +38,7 @@ build-src:
       - abi
       - artifacts
 
-build-doc:       
+build-doc:
   stage: build
   script:
     - echo "Generating docs..."
@@ -49,17 +48,14 @@ build-doc:
     paths:
       - docs
 
-secrets-test: 
+lint-test:
   stage: test
-  image: python:latest
-  before_script: [":"] # noop, override default before_script
   script:
-    - echo "Running secrets scanner..."
-    - pip install trufflehog3
-    - trufflehog3 --no-history -v
-  allow_failure: false
+    - echo "Linting code..."
+    - npm run lint:sol
+    - echo "No lint issues found."
 
-vulnerability-test 1/2: 
+vulnerability-test 1/2:
   stage: test
   script:
     - apt-get update && apt-get install -y python3-pip
@@ -68,7 +64,7 @@ vulnerability-test 1/2:
     - slither .
   allow_failure: false
 
-vulnerability-test 2/2: 
+vulnerability-test 2/2:
   stage: test
   #image: mythril/myth
   before_script:
@@ -85,18 +81,21 @@ vulnerability-test 2/2:
     - ./utils/mythril-check.sh
   allow_failure: false
 
-lint-test:   
-  stage: test 
-  script:
-    - echo "Linting code..."
-    - npm run lint 
-    - echo "No lint issues found."
-
-unit-test:   
+unit-test:
   stage: test
   script:
     - echo "Running unit tests... "
     - npm run test
+
+secrets-test:
+  stage: test
+  image: python:latest
+  before_script: [":"] # noop, override default before_script
+  script:
+    - echo "Running secrets scanner..."
+    - pip install trufflehog3
+    - trufflehog3 --no-history -v
+  allow_failure: false
 
 coverage-report:
   stage: report
@@ -137,16 +136,15 @@ release:
     variables:
       - $CI_COMMIT_TITLE =~ /^RELEASE:.+$/
 
-# Typically contracts are deployed into prod (testnet / mainnet) locally from a developer's machine. 
-# This job can automated that task.
-# The deployment results are saved in deployments dir which is kept in the repository.
+# Typically contracts are deployed into prod (testnet / mainnet) locally from a developer's machine.
+# This job automates the task, deployment results are saved in the deployments dir which is synced to the repo.
 deploy_staging:
   stage: deploy
   extends: .git:push
   when: manual
   script:
     - echo "Deploy to staging environment"
-    - npx hardhat --network ropsten deploy
+    - npm run deploy:staging
     - rsync -a deployments "${CI_COMMIT_SHA}"
   environment: staging
   only:
@@ -161,7 +159,7 @@ deploy_prod:
   when: manual
   script:
     - echo "Deploy to production environment"
-    - npx hardhat --network mainnet deploy
+    - npm run deploy:production
     - rsync -a deployments "${CI_COMMIT_SHA}"
   environment: production
   only:
@@ -171,39 +169,28 @@ deploy_prod:
       - deployments
 
 verify_staging:
-    stage: operate
-    needs: [deploy_staging]
-    script:
-        #- npx hardhat --network ropsten etherscan-verify --license UNLICENSED --force-license
-        #- npx hardhat --network ropsten sourcify
-        - npx hardhat run --network ropsten scripts/verify.js
+  stage: operate
+  needs: [deploy_staging]
+  script:
+    - npm run verify:staging
 
 verify_delpoy:
-    stage: operate
-    needs: [deploy_prod]
-    script:
-        #- npx hardhat --network mainnet etherscan-verify --license NONE --force-license
-        #- npx hardhat --network mainnet sourcify
-        - npx hardhat run --network mainnet scripts/verify.js
+  stage: operate
+  needs: [deploy_prod]
+  script:
+    - npm run verify:production
 
 # https://dev.to/ranb2002/how-to-push-to-a-git-repository-from-a-gitlab-ci-pipeline-4ikp
 # https://gitlab.com/guided-explorations/gitlab-ci-yml-tips-tricks-and-hacks/commit-to-repos-during-ci/commit-to-repos-during-ci/-/blob/master/.gitlab-ci.yml
 .git:push:
-  #image:
-  #  entrypoint: ['']
-  #  name: alpine/git:${GIT_VERSION}
   extends: default
   before_script:
     - apt-get update && apt-get install -y rsync
-    # Clone the repository via HTTPS inside a new directory
     - git clone "https://root:$GITLAB_TOKEN@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git" "${CI_COMMIT_SHA}" # nosecret
-    # Set the displayed user with the commits that are about to be made
     - git config --global user.email "${GIT_USER_EMAIL:-$GITLAB_USER_EMAIL}"
     - git config --global user.name "${GIT_USER_NAME:-$GITLAB_USER_NAME}"
   after_script:
-    # Go to the new directory
     - cd "${CI_COMMIT_SHA}"
-    # Add all generated files to Git
     - git add .
     - |-
       # Check if we have modifications to commit

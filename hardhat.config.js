@@ -1,9 +1,9 @@
-require('dotenv').config()
-require('hardhat-abi-exporter');
-require('hardhat-deploy');
+require("dotenv").config();
+require("hardhat-abi-exporter");
+require("hardhat-deploy");
 require("hardhat-watcher");
-require('hardhat-contract-sizer');
-require('hardhat-docgen');
+require("hardhat-contract-sizer");
+require("hardhat-docgen");
 require("hardhat-gas-reporter");
 require("@nomiclabs/hardhat-waffle");
 require("@nomiclabs/hardhat-solhint");
@@ -46,9 +46,9 @@ function getChainConfig(network) {
       path: "m/44'/60'/0'/0",
     },
     chainId: chainIds[network],
-    tags: network === "mainnet" && ["production"] || ["staging"],
+    tags: (network === "mainnet" && ["production"]) || ["staging"],
     url,
-    live: network === "mainnet" && true || false,
+    live: (network === "mainnet" && true) || false,
     saveDeployments: true,
   };
 }
@@ -65,7 +65,7 @@ module.exports = {
     sources: "./contracts",
     tests: "./test",
     cache: "./cache",
-    artifacts: "./artifacts" // build
+    artifacts: "./artifacts", // build
   },
   defaultNetwork: "hardhat",
   networks: {
@@ -82,14 +82,13 @@ module.exports = {
         // URL should point to a node with archival data (Alchemy recommended)
         url: process.env.FORKING_URL || "https://eth-mainnet.alchemyapi.io/v2/<key>",
         // latest block is taken if FORKING_BLOCK env is not provided
-        blockNumber:
-          process.env.FORKING_BLOCK && parseInt(process.env.FORKING_BLOCK) || 0,
+        blockNumber: (process.env.FORKING_BLOCK && parseInt(process.env.FORKING_BLOCK)) || 0,
       },
-      tags: ["test", "local"]
+      tags: ["test", "local"],
     },
     localhost: {
-      url: 'http://127.0.0.1:8545',
-      tags: ["local"]
+      url: "http://127.0.0.1:8545",
+      tags: ["local"],
     },
     goerli: getChainConfig("goerli"),
     kovan: getChainConfig("kovan"),
@@ -98,7 +97,7 @@ module.exports = {
     mainnet: getChainConfig("mainnet"),
   },
   etherscan: {
-    apiKey: process.env.ETHERSCAN_API_KEY
+    apiKey: process.env.ETHERSCAN_API_KEY,
   },
   abiExporter: {
     path: "./abi",
@@ -106,23 +105,23 @@ module.exports = {
     flat: true,
     only: [],
     except: [],
-    spacing: 2
+    spacing: 2,
   },
   preprocess: {
-    eachLine: removeConsoleLog((bre) => bre.network.name !== "hardhat" && bre.network.name !== "localhost"),
+    eachLine: removeConsoleLog(bre => bre.network.name !== "hardhat" && bre.network.name !== "localhost"),
   },
   gasReporter: {
-    currency: 'EUR',
-    enabled: (process.env.REPORT_GAS) ? true : false,
+    currency: "EUR",
+    enabled: !!process.env.REPORT_GAS,
     coinmarketcap: process.env.COINMARKETCAP_API_KEY,
-    outputFile: 'gas-report.txt'
+    outputFile: "gas-report.txt",
   },
   watcher: {
     compilation: {
       tasks: ["compile"],
       files: ["./contracts"],
       verbose: true,
-    }
+    },
   },
   contractSizer: {
     alphaSort: true,
@@ -130,7 +129,7 @@ module.exports = {
     disambiguatePaths: false,
   },
   docgen: {
-    path: './docs',
+    path: "./docs",
     clear: true,
     runOnCompile: false,
   },

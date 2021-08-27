@@ -2,4 +2,6 @@
 . "$(dirname "$0")/_/husky.sh"
 
 #npm run secret-scan
+#npm run lint:js #:fix
+#npm run lint:sol #:fix
 npm run lint
