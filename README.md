@@ -31,7 +31,6 @@ This repository contains a Solidity sample project that builds on [hardhat](http
 - `Node.js` – v16.7.0
 - `npm` – 7.20.3
 
-
 ### Installation
 
 Run `npm install` to install above tools (all dependencies specified in `package.json`) and prepare husky (pre-commit) hooks.
@@ -91,7 +90,7 @@ The pipeline contains the following stages:
 Build > Test > Report > Release > Deploy > Operate
 
 <p align="center">
- <img src="images/pipeline.png" align="center" width="650">
+ <img src="images/pipeline.png" align="center" width="800">
 <p align="center">
 
 #### Build
