@@ -89,9 +89,9 @@ The env variables must be provisioned to the pipeline through Settings>CI/CD>Var
 The pipeline contains the following stages:  
 Build > Test > Report > Release > Deploy > Operate
 
-<p align="center">
- <img src="images/pipeline.png" align="center" width="800">
-<p align="center">
+<p>
+<img src="images/pipeline.png" width="800">
+<p>
 
 #### Build
 The build step compiles sources and includes ABI and documentation generation.
@@ -102,8 +102,13 @@ The test step runs lint, unit and vulnerability analysis test jobs and scans the
 #### Report
 The report step generates test coverage and gas reports.
 
-#### Release
-The release step allows versioning (major/minor/patch) based on commit [prefixes](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#type). As part of publishing a package, semantic-release bumps the version in package.json. Further, it automates the publishing of NPM packages to GitLab's Package Registry and auto-generates releases on the Releases page.
+#### Release 
+
+The release step allows versioning (major/minor/patch) based on commit [prefixes](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#type). As part of publishing a package, semantic-release bumps the version in package.json. Further, it automates the publishing of NPM packages to GitLab's Package Registry and auto-generates releases on the Releases page. 
+
+<p>
+<img src="images/release.png" height="200"> 
+<p>
 
 #### Deploy
 The deploy step deploys smart contracts, deployment results are synced back to the repo (within the deployments folder).
