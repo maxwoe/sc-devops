@@ -40,7 +40,7 @@ Run `npm install` to install above tools (all dependencies specified in `package
 - `hardhat.config.js`: The file contains the configuration for setting up the development environment and the blockchain connection. For more information read [hardhat configuration](https://hardhat.org/config/).
 - `.env` (_Needs to be created manually_): For development an `.env` file containing several environment variables must exist in the root directory of the project. The provided `.env.example` file serves as a template. At the moment the most important entries are the following:
   - `INFURA_API_KEY`: The project does not use its own Ethereum node, so an external provider, Infura, is used. To get the key visit the [infura website](https://infura.io/).
-  - `MNEMONIC`= Mnemonic phrase of the HD wallet used for interacting with the networks (i.e. private key). Contracts are provisioned from an account (derived from the mnemonic) which should have enough funds to provision the contracts.
+  - `MNEMONIC`: Mnemonic phrase of the HD wallet used for interacting with the networks (i.e. private key). Contracts are provisioned from an account (derived from the mnemonic) which should have enough funds to provision the contracts.
   - `ETHERSCAN_API_KEY`: Block explorer key needed for contract verification.
   - `COINMARKETCAP_API_KEY`: Crypto data provider used to fetch exchange rates for gas fee calcualtion in gas reports.
 - In addition, there are several configuration files for the above tools in the project root. For more details, please refer to the respective documentation.
