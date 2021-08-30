@@ -13,14 +13,17 @@ This repository contains a Solidity sample project that builds on [hardhat](http
 - [hardhat-gas-reporter](https://hardhat.org/plugins/hardhat-gas-reporter.html): Generates gas reports
 - [hardhat-watcher](https://hardhat.org/plugins/hardhat-watcher.html): Optionally run actions when files change (e.g., auto compile)
 - [husky](https://github.com/typicode/husky): Modern native git hooks (used to setup pre-commit tasks)
+- [mythril](https://github.com/ConsenSys/mythril)*: Mythril is a security analysis tool for EVM bytecode
 - [prettier](https://prettier.io/): An opinionated code formatter that supports many languages
 - [prettier-plugin-solidity](https://github.com/prettier-solidity/prettier-plugin-solidity): Formatter for Solidity
 - [semantic-release](https://github.com/semantic-release/semantic-release): Version management/package publishing based on commit [prefixes](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#type)
-- [slither](https://github.com/crytic/slither): Static analysis framework used to inspect Solidity smart contracts
+- [slither](https://github.com/crytic/slither)*: Static analysis framework used to inspect Solidity smart contracts
 - [solidity-coverage](https://github.com/sc-forks/solidity-coverage): Determines code coverage for Solidity testing
 - [solhint](https://github.com/protofire/solhint): A linting utility for Solidity code
-- [trufflehog3](https://github.com/feeltheajf/trufflehog3): A secret scanner that searches through git repositories for secrets
+- [trufflehog3](https://github.com/feeltheajf/trufflehog3)*: A secret scanner that searches through git repositories for secrets
 - [waffle](https://github.com/EthWorks/Waffle): Tooling for writing smart contract tests
+
+\* not available as JS package, must be installed seperately
 
 ## Usage
 
