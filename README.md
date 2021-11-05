@@ -1,6 +1,8 @@
-# Smart Contract DevOps
+# DevOps for Ethereum Blockchain Smart Contracts 
 
-This repository contains a Solidity sample project that builds on [hardhat](https://github.com/nomiclabs/hardhat) as a development environment and demonstrates a DevOps approach with Continuous Integration/Continuous Delivery using Gitlab CI.
+This repository contains a Solidity sample project that builds on [hardhat](https://github.com/nomiclabs/hardhat) as a development environment and demonstrates a DevOps approach with Continuous Integration/Continuous Delivery using Gitlab CI.  
+It is also the accompanying code repository for the following research paper:  
+[DevOps for Ethereum Blockchain Smart Contracts](https://eprints.cs.univie.ac.at/7141/)
 
 ## Tool Setup
 
