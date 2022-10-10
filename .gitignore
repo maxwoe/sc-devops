@@ -3,9 +3,7 @@ artifacts/
 build/
 cache/
 coverage/
-docs/
 node_modules/
-
 *.env
 coverage.json
 gas-report.html
